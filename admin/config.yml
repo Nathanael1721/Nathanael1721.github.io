@@ -1,0 +1,33 @@
+backend:
+  name: github
+  repo: Nathanael1721/nathan.github.io   # ganti
+  branch: main                                # atau nama branch deploy
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+site_url: "https://nathanael1721.github.io/nathan.github.io/"     # ganti ke domain final
+display_url: "https://nathanael1721.github.io/nathan.github.io/"
+
+collections:
+  - name: "projects"
+    label: "Projects"
+    files:
+      - file: "content/projects.json"
+        label: "Projects List"
+        name: "projects"
+        extension: "json"
+        format: "json"
+        fields:
+          - label: "Projects"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Kicker", name: "kicker", widget: "string", required: false }
+              - { label: "Summary", name: "summary", widget: "text" }
+              - label: "Bullets"
+                name: "bullets"
+                widget: "list"
+                required: false
+                field: { label: "Item", name: "item", widget: "string" }

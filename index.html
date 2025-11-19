@@ -11,7 +11,7 @@
   <header class="site-header">
     <div class="container header-inner">
       <div class="logo">
-        <a href="#top">N. Tjahyadi</a>
+        <a href="#top">Nathan</a>
       </div>
       <nav class="nav">
         <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
@@ -131,51 +131,12 @@
     <section id="projects" class="section">
       <div class="container">
         <h2>Selected Projects</h2>
-        <div class="grid-3">
-          <article class="card">
-            <h3>Edge Computing for Smart Agriculture</h3>
-            <p class="card-kicker">Edge • IoT • Raspberry Pi</p>
-            <p>
-              Designed an edge computing system for smart farming that processes sensor data locally,
-              buffers data during network outages, and syncs to the cloud with lightweight protocols.
-            </p>
-            <ul class="card-list">
-              <li>Raspberry Pi 5 as edge node</li>
-              <li>MQTT-based communication</li>
-              <li>Local temporary storage to handle disconnections</li>
-              <li>Grafana dashboard for visualization</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <h3>Drone VTOL Platform</h3>
-            <p class="card-kicker">UAV • Ardupilot • MAVLink</p>
-            <p>
-              Built and configured a VTOL drone platform using Pixhawk, Ardupilot, and MAVLink
-              for experimentation in flight control and mapping.
-            </p>
-            <ul class="card-list">
-              <li>Pixhawk autopilot configuration</li>
-              <li>Flight mode tuning and failsafe setup</li>
-              <li>Integration with ground control station</li>
-            </ul>
-          </article>
-
-          <article class="card">
-            <h3>LoRa Communication System</h3>
-            <p class="card-kicker">LoRa • Networking</p>
-            <p>
-              Implemented simplex, half-duplex, and full-duplex communication modes over LoRa modules
-              to evaluate long-range communication patterns for IoT.
-            </p>
-            <ul class="card-list">
-              <li>Protocol configuration and debugging</li>
-              <li>Throughput and reliability testing</li>
-            </ul>
-          </article>
+        <div id="projectsGrid" class="grid-3">
+          <!-- JS akan render card-card project di sini -->
         </div>
       </div>
     </section>
+
 
     <!-- Research & Publications -->
     <section id="research" class="section section-alt">
