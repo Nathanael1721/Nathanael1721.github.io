@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nathanael Tjahyadi | Portfolio</title>
+  <meta name="description" content="Portfolio of Nathanael Tjahyadi, IoT, Edge Computing, and DevOps Engineer.">
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <a href="#top">N. Tjahyadi</a>
+      </div>
+      <nav class="nav">
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+          ☰
+        </button>
+        <ul class="nav-list" id="navList">
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#research">Research</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <p class="hero-kicker">IoT • Edge Computing • DevOps</p>
+          <h1 class="hero-title">Nathanael Tjahyadi</h1>
+          <p class="hero-subtitle">
+            Engineer focusing on IoT, edge computing, and DevOps.  
+            Building systems that are observable, automated, and reliable from sensor to cloud.
+          </p>
+          <div class="hero-actions">
+            <a href="#projects" class="btn primary-btn">View Projects</a>
+            <a href="#contact" class="btn ghost-btn">Get in Touch</a>
+          </div>
+          <div class="hero-meta">
+            <span>Taipei, Taiwan</span>
+            <span>Master’s Student, EECS – Taipei Tech</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-inner">
+            <h2>Current Focus</h2>
+            <ul>
+              <li>Edge computing for smart agriculture</li>
+              <li>DevOps & CI/CD for cloud-native systems</li>
+              <li>AIoT & UAV experimentation (Ardupilot, MAVLink)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+      <div class="container section-inner two-col">
+        <div>
+          <h2>About</h2>
+          <p>
+            I work across IoT, networking, and DevOps. I have experience running Linux servers,
+            building CI/CD pipelines, and deploying containerized workloads on cloud and on-premise infrastructure.
+          </p>
+          <p>
+            On the hardware side, I prototype with Raspberry Pi, Arduino, LoRa, and various sensors to build
+            smart agriculture, monitoring, and UAV systems. My goal is to design systems that keep working
+            even when networks fail and resources are constrained.
+          </p>
+        </div>
+        <div class="about-highlight">
+          <h3>Snapshot</h3>
+          <ul class="tag-list">
+            <li>DevOps Engineer Intern @ Telkom Indonesia</li>
+            <li>IoT Programmer Intern @ Vascomm</li>
+            <li>Server Monitoring @ Jagoan Hosting (Beon)</li>
+            <li>APERTI BUMN Scholarship Awardee</li>
+            <li>Multiple national competition awards</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section section-alt">
+      <div class="container">
+        <h2>Skills</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Cloud & DevOps</h3>
+            <ul>
+              <li>AWS, Azure</li>
+              <li>Docker, Kubernetes</li>
+              <li>Bitbucket Pipelines, CI/CD</li>
+              <li>DevSecOps practices</li>
+              <li>Linux server administration</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>IoT & Embedded</h3>
+            <ul>
+              <li>Raspberry Pi, Arduino</li>
+              <li>LoRa / LoRaWAN</li>
+              <li>Sensor integration (DHT, soil moisture, etc.)</li>
+              <li>Edge data processing</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Monitoring & Tooling</h3>
+            <ul>
+              <li>Grafana, Prometheus, Datadog, Alerta</li>
+              <li>Networking fundamentals</li>
+              <li>Python, Bash</li>
+              <li>Git, VS Code</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section">
+      <div class="container">
+        <h2>Selected Projects</h2>
+        <div class="grid-3">
+          <article class="card">
+            <h3>Edge Computing for Smart Agriculture</h3>
+            <p class="card-kicker">Edge • IoT • Raspberry Pi</p>
+            <p>
+              Designed an edge computing system for smart farming that processes sensor data locally,
+              buffers data during network outages, and syncs to the cloud with lightweight protocols.
+            </p>
+            <ul class="card-list">
+              <li>Raspberry Pi 5 as edge node</li>
+              <li>MQTT-based communication</li>
+              <li>Local temporary storage to handle disconnections</li>
+              <li>Grafana dashboard for visualization</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Drone VTOL Platform</h3>
+            <p class="card-kicker">UAV • Ardupilot • MAVLink</p>
+            <p>
+              Built and configured a VTOL drone platform using Pixhawk, Ardupilot, and MAVLink
+              for experimentation in flight control and mapping.
+            </p>
+            <ul class="card-list">
+              <li>Pixhawk autopilot configuration</li>
+              <li>Flight mode tuning and failsafe setup</li>
+              <li>Integration with ground control station</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>LoRa Communication System</h3>
+            <p class="card-kicker">LoRa • Networking</p>
+            <p>
+              Implemented simplex, half-duplex, and full-duplex communication modes over LoRa modules
+              to evaluate long-range communication patterns for IoT.
+            </p>
+            <ul class="card-list">
+              <li>Protocol configuration and debugging</li>
+              <li>Throughput and reliability testing</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Research & Publications -->
+    <section id="research" class="section section-alt">
+      <div class="container">
+        <h2>Research & Publications</h2>
+        <div class="research-list">
+          <article class="research-item">
+            <h3>Machine Learning-based EMI Prediction</h3>
+            <p>
+              Explores ensemble learning techniques to predict electromagnetic interference (EMI)
+              spectra for LED driver circuits, improving accuracy over baseline models.
+            </p>
+            <p class="research-meta">
+              Roles: data preprocessing, model evaluation, and interpretation of results.  
+              Published in peer-reviewed venues (IEEE and journals).
+            </p>
+          </article>
+
+          <article class="research-item">
+            <h3>Smart Tire Monitoring System</h3>
+            <p>
+              Designed a tire monitoring system using cloud and Docker-based infrastructure to
+              collect and visualize sensor data in near real-time.
+            </p>
+          </article>
+
+          <article class="research-item">
+            <h3>Rectenna Wireless Energy Harvesting</h3>
+            <p>
+              Worked on RF energy harvesting with rectenna-based circuits, focusing on system
+              assembly and measurement for low-power scenarios.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section id="experience" class="section">
+      <div class="container">
+        <h2>Experience</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <h3>DevOps Engineer Intern</h3>
+            <p class="timeline-org">PT Telekomunikasi Indonesia</p>
+            <p class="timeline-meta">2024 – 2024 | Jakarta, Indonesia</p>
+            <ul>
+              <li>Built CI/CD pipelines with Bitbucket Pipelines for containerized applications.</li>
+              <li>Deployed services on Kubernetes clusters and maintained monitoring with Grafana and Datadog.</li>
+              <li>Contributed to DevSecOps implementation and documentation of servers and services.</li>
+            </ul>
+          </div>
+
+          <div class="timeline-item">
+            <h3>IoT Programmer Intern</h3>
+            <p class="timeline-org">PT Vascomm Solusi Teknologi</p>
+            <p class="timeline-meta">2020 | Malang, Indonesia</p>
+            <ul>
+              <li>Developed and researched LoRa-based communication for IoT systems.</li>
+              <li>Configured and tested different communication modes for field deployments.</li>
+            </ul>
+          </div>
+
+          <div class="timeline-item">
+            <h3>Teaching Factory / Server Monitoring</h3>
+            <p class="timeline-org">PT Beon Intermedia (Jagoan Hosting)</p>
+            <p class="timeline-meta">2020 – 2021 | Malang, Indonesia</p>
+            <ul>
+              <li>Monitored server errors using Grafana, Prometheus, and Alerta.</li>
+              <li>Produced tutorials and supported Linux server management.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section section-alt">
+      <div class="container">
+        <h2>Contact</h2>
+        <p>
+          For collaboration, research, or opportunities in IoT, edge computing, and DevOps,
+          use the channels below.
+        </p>
+        <div class="contact-grid">
+          <div>
+            <h3>Email</h3>
+            <p><a href="mailto:nathanaelcayadi@gmail.com">nathanaelcayadi@gmail.com</a></p>
+          </div>
+          <div>
+            <h3>LinkedIn</h3>
+            <p>
+              <a href="https://www.linkedin.com/in/nathanael-tjahyadi/" target="_blank" rel="noopener noreferrer">
+                linkedin.com/in/nathanael-tjahyadi
+              </a>
+            </p>
+          </div>
+          <div>
+            <h3>Location</h3>
+            <p>Taipei, Taiwan</p>
+          </div>
+        </div>
+        <p class="contact-note">
+          CV available on request or via LinkedIn.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Nathanael Tjahyadi</span>
+      <span>Built with HTML, CSS, and vanilla JS</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
