@@ -1,6 +1,10 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: Nathanael1721/Nathanael1721.github.io   # ganti sesuai repo
   branch: main
+
+site_url: "https://nathanael1721.github.io"      # sesuaikan
+display_url: "https://nathanael1721.github.io"
 
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
