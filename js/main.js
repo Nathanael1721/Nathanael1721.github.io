@@ -300,24 +300,26 @@ document.addEventListener("DOMContentLoaded", () => {
 function normalizeImages(item) {
   const imgs = [];
 
-  // new format: images: [{ src: "/path" }, ...] atau ["path1", "path2"]
+  // 1) gambar legacy di "image" masuk dulu
+  if (item.image) {
+    imgs.push(item.image);
+  }
+
+  // 2) gambar di "images" (bisa string atau object { src })
   if (Array.isArray(item.images)) {
     item.images.forEach((img) => {
       if (typeof img === "string") {
-        imgs.push(img);
+        if (!imgs.includes(img)) imgs.push(img);
       } else if (img && (img.src || img.path || img.url)) {
-        imgs.push(img.src || img.path || img.url);
+        const src = img.src || img.path || img.url;
+        if (!imgs.includes(src)) imgs.push(src);
       }
     });
   }
 
-  // fallback ke single legacy image
-  if (!imgs.length && item.image) {
-    imgs.push(item.image);
-  }
-
   return imgs;
 }
+
 
 function renderProjectModalImage() {
   if (!modalImage || !modalMedia) return;
