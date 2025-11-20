@@ -373,3 +373,61 @@ if (modalNext) {
     renderProjectModalImage();
   });
 }
+
+function normalizeBullets(list) {
+  if (!list) return [];
+  if (Array.isArray(list)) {
+    return list.map((item) =>
+      typeof item === "string" ? item : item.item || ""
+    ).filter(Boolean);
+  }
+  return [];
+}
+
+async function loadEducation() {
+  const container = document.getElementById("educationTimeline");
+  if (!container) return;
+
+  try {
+    const res = await fetch("content/education.json");
+    if (!res.ok) throw new Error("Failed to fetch education");
+    const data = await res.json();
+    const items = Array.isArray(data.items) ? data.items : [];
+
+    container.innerHTML = items
+      .map((item) => {
+        const degree = item.degree || "";
+        const school = item.school || "";
+        const location = item.location || "";
+        const period = item.period || "";
+
+        const bullets = normalizeBullets(item.details);
+
+        return `
+          <article class="timeline-item">
+            <h3>${degree}</h3>
+            <p class="timeline-org">${school}</p>
+            <p class="timeline-meta">
+              ${[period, location].filter(Boolean).join(" · ")}
+            </p>
+            ${
+              bullets.length
+                ? `<ul>${bullets.map((b) => `<li>${b}</li>`).join("")}</ul>`
+                : ""
+            }
+          </article>
+        `;
+      })
+      .join("");
+  } catch (err) {
+    console.error("Error loading education:", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadProjects();
+  loadResearch();
+  loadExperience();
+  loadEducation();   // baru
+  // fungsi init lain tetap
+});

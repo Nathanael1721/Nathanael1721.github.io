@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "degree": "Master's in Electrical Engineering & Computer Science",
+      "school": "National Taipei University of Technology (Taipei Tech)",
+      "location": "Taipei, Taiwan",
+      "period": "2025 – present",
+      "details": [
+        "Focus on AIoT, edge computing, and UAV experimentation.",
+        "Planned research on LoRaWAN, edge computing, and smart agriculture."
+      ]
+    },
+    {
+      "degree": "Bachelor of Applied Science in Computer Engineering",
+      "school": "Telkom University",
+      "location": "Surabaya, Indonesia",
+      "period": "2021 – 2025",
+      "details": [
+        "GPA 3.92/4.00, top cohort.",
+        "Final project: Edge computing system for smart agriculture with Raspberry Pi 5.",
+        "Aperti BUMN Full Scholarship Awardee."
+      ]
+    }
+  ]
+}

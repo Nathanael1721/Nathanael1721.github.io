@@ -97,3 +97,29 @@ collections:
                 widget: "list"
                 required: false
                 field: { label: "Item", name: "item", widget: "string" }
+
+  - name: "education"
+    label: "Education"
+    files:
+      - file: "content/education.json"
+        label: "Education Entries"
+        name: "education"
+        extension: "json"
+        format: "json"
+        fields:
+          - label: "Education List"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "Degree", name: "degree", widget: "string" }
+              - { label: "School", name: "school", widget: "string" }
+              - { label: "Location", name: "location", widget: "string", required: false }
+              - { label: "Period", name: "period", widget: "string" }
+              - label: "Details"
+                name: "details"
+                widget: "list"
+                required: false
+                field:
+                  label: "Item"
+                  name: "item"
+                  widget: "string"
