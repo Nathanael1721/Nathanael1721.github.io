@@ -1,4 +1,4 @@
-// Mobile nav toggle
+// ---------- Mobile nav toggle ----------
 const navToggle = document.getElementById("navToggle");
 const navList = document.getElementById("navList");
 
@@ -14,89 +14,50 @@ if (navToggle && navList) {
   });
 }
 
-// Dynamic year in footer
+// ---------- Dynamic year ----------
 const yearSpan = document.getElementById("year");
 if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear();
 }
 
-async function loadProjects() {
-  const container = document.getElementById("projectsGrid");
-  if (!container) return;
-
-  try {
-    const res = await fetch("content/projects.json");
-    if (!res.ok) throw new Error("Failed to fetch projects");
-    const data = await res.json();
-    const items = Array.isArray(data.items) ? data.items : [];
-
-    container.innerHTML = items
-      .map((item, index) => {
-        const title = item.title || "";
-        const kicker = item.kicker || "";
-        const summary = item.summary || "";
-        const bullets = normalizeBullets(item.bullets);
-
-        const imgs = normalizeImages(item);
-        const thumb = imgs.length ? imgs[0] : "";
-
-        return `
-          <article class="card card-clickable" data-index="${index}">
-            ${
-              thumb
-                ? `<div class="card-image-wrapper">
-                     <img src="${thumb}" alt="${title} thumbnail">
-                   </div>`
-                : ""
-            }
-            ${
-              kicker
-                ? `<p class="card-kicker">${kicker}</p>`
-                : ""
-            }
-            <h3>${title}</h3>
-            ${
-              summary
-                ? `<p>${summary}</p>`
-                : ""
-            }
-            ${
-              bullets.length
-                ? `<ul class="card-list">
-                     ${bullets.map((b) => `<li>${b}</li>`).join("")}
-                   </ul>`
-                : ""
-            }
-          </article>
-        `;
-      })
-      .join("");
-
-    // event listener click card tetap seperti semula
-  } catch (err) {
-    console.error("Error loading projects:", err);
-  }
-}
-
-
-document.addEventListener("DOMContentLoaded", () => {
-  // kode nav toggle + year sebelumnya
-  loadProjects();
-});
-
-
-// --- existing nav + year code tetap ---
+// ---------- Helpers ----------
 
 function normalizeBullets(list) {
+  if (!list) return [];
   if (!Array.isArray(list)) return [];
   return list
-    .map((b) =>
-      typeof b === "string" ? b : (b && (b.item || b.value || b.text)) || ""
-    )
-    .filter((x) => x);
+    .map((item) => {
+      if (typeof item === "string") return item;
+      if (!item) return "";
+      return item.item || item.value || item.text || "";
+    })
+    .filter(Boolean);
 }
 
-// ---------- Projects + modal ----------
+function normalizeImages(item) {
+  const imgs = [];
+
+  // single legacy image
+  if (item.image) {
+    imgs.push(item.image);
+  }
+
+  // new list of images
+  if (Array.isArray(item.images)) {
+    item.images.forEach((img) => {
+      if (typeof img === "string") {
+        if (!imgs.includes(img)) imgs.push(img);
+      } else if (img && (img.src || img.path || img.url)) {
+        const src = img.src || img.path || img.url;
+        if (!imgs.includes(src)) imgs.push(src);
+      }
+    });
+  }
+
+  return imgs;
+}
+
+// ---------- Modal state & elements ----------
 
 const projectModal = document.getElementById("projectModal");
 const projectModalBackdrop = document.getElementById("projectModalBackdrop");
@@ -115,6 +76,35 @@ const modalNext = document.getElementById("projectModalNext");
 let currentImages = [];
 let currentImageIndex = 0;
 
+function renderProjectModalImage() {
+  if (!modalImage || !modalMedia) return;
+
+  if (!currentImages.length) {
+    modalMedia.style.display = "none";
+    return;
+  }
+
+  modalMedia.style.display = "flex";
+
+  if (currentImageIndex < 0) currentImageIndex = 0;
+  if (currentImageIndex >= currentImages.length) {
+    currentImageIndex = currentImages.length - 1;
+  }
+
+  const src = currentImages[currentImageIndex];
+  modalImage.src = src;
+  modalImage.alt = modalTitle.textContent || "Project image";
+
+  if (currentImages.length > 1) {
+    modalCount.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
+    modalPrev.style.display = "flex";
+    modalNext.style.display = "flex";
+  } else {
+    modalCount.textContent = "";
+    modalPrev.style.display = "none";
+    modalNext.style.display = "none";
+  }
+}
 
 function openProjectModal(item) {
   if (!projectModal) return;
@@ -138,7 +128,6 @@ function openProjectModal(item) {
     modalBullets.style.display = "none";
   }
 
-  // images
   currentImages = normalizeImages(item);
   currentImageIndex = 0;
   renderProjectModalImage();
@@ -147,13 +136,13 @@ function openProjectModal(item) {
   projectModal.setAttribute("aria-hidden", "false");
 }
 
-
 function closeProjectModal() {
   if (!projectModal) return;
   projectModal.classList.remove("show");
   projectModal.setAttribute("aria-hidden", "true");
 }
 
+// modal events
 if (projectModalBackdrop) {
   projectModalBackdrop.addEventListener("click", closeProjectModal);
 }
@@ -161,8 +150,31 @@ if (projectModalClose) {
   projectModalClose.addEventListener("click", closeProjectModal);
 }
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeProjectModal();
+  if (e.key === "Escape" && projectModal?.classList.contains("show")) {
+    closeProjectModal();
+  }
 });
+
+if (modalPrev) {
+  modalPrev.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (!currentImages.length) return;
+    currentImageIndex =
+      (currentImageIndex - 1 + currentImages.length) % currentImages.length;
+    renderProjectModalImage();
+  });
+}
+
+if (modalNext) {
+  modalNext.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (!currentImages.length) return;
+    currentImageIndex = (currentImageIndex + 1) % currentImages.length;
+    renderProjectModalImage();
+  });
+}
+
+// ---------- Projects (cards + thumbnails) ----------
 
 async function loadProjects() {
   const container = document.getElementById("projectsGrid");
@@ -172,33 +184,48 @@ async function loadProjects() {
     const res = await fetch("content/projects.json", { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to load projects.json");
     const data = await res.json();
-    const items = data.items || [];
+    const items = Array.isArray(data.items) ? data.items : [];
 
-    container.innerHTML = "";
+    container.innerHTML = items
+      .map((item, index) => {
+        const title = item.title || "";
+        const kicker = item.kicker || "";
+        const summary = item.summary || "";
+        const bullets = normalizeBullets(item.bullets);
 
-    items.forEach((item) => {
-      const card = document.createElement("article");
-      card.className = "card card-clickable";
+        const imgs = normalizeImages(item);
+        const thumb = imgs.length ? imgs[0] : "";
 
-      const bulletsHtml = normalizeBullets(item.bullets)
-        .map((b) => `<li>${b}</li>`)
-        .join("");
+        return `
+          <article class="card card-clickable" data-index="${index}">
+            ${
+              thumb
+                ? `<div class="card-image-wrapper">
+                     <img src="${thumb}" alt="${title} thumbnail">
+                   </div>`
+                : ""
+            }
+            ${kicker ? `<p class="card-kicker">${kicker}</p>` : ""}
+            <h3>${title}</h3>
+            ${summary ? `<p>${summary}</p>` : ""}
+            ${
+              bullets.length
+                ? `<ul class="card-list">
+                     ${bullets.map((b) => `<li>${b}</li>`).join("")}
+                   </ul>`
+                : ""
+            }
+          </article>
+        `;
+      })
+      .join("");
 
-      card.innerHTML = `
-        <h3>${item.title || ""}</h3>
-        ${item.kicker ? `<p class="card-kicker">${item.kicker}</p>` : ""}
-        ${item.summary ? `<p>${item.summary}</p>` : ""}
-        ${
-          bulletsHtml
-            ? `<ul class="card-list">
-                 ${bulletsHtml}
-               </ul>`
-            : ""
-        }
-      `;
-
-      card.addEventListener("click", () => openProjectModal(item));
-      container.appendChild(card);
+    const cards = container.querySelectorAll(".card-clickable");
+    cards.forEach((card, idx) => {
+      card.addEventListener("click", () => {
+        const item = items[idx];
+        if (item) openProjectModal(item);
+      });
     });
   } catch (err) {
     console.error(err);
@@ -217,7 +244,7 @@ async function loadResearch() {
     const res = await fetch("content/research.json", { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to load research.json");
     const data = await res.json();
-    const items = data.items || [];
+    const items = Array.isArray(data.items) ? data.items : [];
 
     container.innerHTML = "";
 
@@ -268,7 +295,7 @@ async function loadExperience() {
     const res = await fetch("content/experience.json", { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to load experience.json");
     const data = await res.json();
-    const items = data.items || [];
+    const items = Array.isArray(data.items) ? data.items : [];
 
     container.innerHTML = "";
 
@@ -284,9 +311,8 @@ async function loadExperience() {
         <h3>${item.role || ""}</h3>
         <p class="timeline-org">${item.org || ""}</p>
         <p class="timeline-meta">
-          ${item.period || ""}${
-        item.location ? " | " + item.location : ""
-      }</p>
+          ${item.period || ""}${item.location ? " | " + item.location : ""}
+        </p>
         ${
           bulletsHtml
             ? `<ul>
@@ -305,107 +331,14 @@ async function loadExperience() {
   }
 }
 
-// ---------- Init ----------
-
-document.addEventListener("DOMContentLoaded", () => {
-  // nav toggle + year yang sudah ada
-  loadProjects();
-  loadResearch();
-  loadExperience();
-});
-
-function normalizeImages(item) {
-  const imgs = [];
-
-  if (item.image) {
-    imgs.push(item.image);
-  }
-
-  if (Array.isArray(item.images)) {
-    item.images.forEach((img) => {
-      if (typeof img === "string") {
-        if (!imgs.includes(img)) imgs.push(img);
-      } else if (img && (img.src || img.path || img.url)) {
-        const src = img.src || img.path || img.url;
-        if (!imgs.includes(src)) imgs.push(src);
-      }
-    });
-  }
-
-  return imgs;
-}
-
-
-
-function renderProjectModalImage() {
-  if (!modalImage || !modalMedia) return;
-
-  if (!currentImages.length) {
-    modalMedia.style.display = "none";
-    return;
-  }
-
-  modalMedia.style.display = "flex";
-
-  if (currentImageIndex < 0) currentImageIndex = 0;
-  if (currentImageIndex >= currentImages.length)
-    currentImageIndex = currentImages.length - 1;
-
-  const src = currentImages[currentImageIndex];
-  modalImage.src = src;
-  modalImage.alt = modalTitle.textContent || "Project image";
-
-  // counter
-  if (currentImages.length > 1) {
-    modalCount.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
-  } else {
-    modalCount.textContent = "";
-  }
-
-  // tombol prev/next
-  if (currentImages.length > 1) {
-    modalPrev.style.display = "flex";
-    modalNext.style.display = "flex";
-  } else {
-    modalPrev.style.display = "none";
-    modalNext.style.display = "none";
-  }
-}
-
-if (modalPrev) {
-  modalPrev.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if (!currentImages.length) return;
-    currentImageIndex = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
-    renderProjectModalImage();
-  });
-}
-
-if (modalNext) {
-  modalNext.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if (!currentImages.length) return;
-    currentImageIndex = (currentImageIndex + 1) % currentImages.length;
-    renderProjectModalImage();
-  });
-}
-
-function normalizeBullets(list) {
-  if (!list) return [];
-  if (Array.isArray(list)) {
-    return list.map((item) =>
-      typeof item === "string" ? item : item.item || ""
-    ).filter(Boolean);
-  }
-  return [];
-}
+// ---------- Education ----------
 
 async function loadEducation() {
   const container = document.getElementById("educationTimeline");
   if (!container) return;
 
   try {
-    const res = await fetch("content/education.json");
+    const res = await fetch("content/education.json", { cache: "no-store" });
     if (!res.ok) throw new Error("Failed to fetch education");
     const data = await res.json();
     const items = Array.isArray(data.items) ? data.items : [];
@@ -437,13 +370,16 @@ async function loadEducation() {
       .join("");
   } catch (err) {
     console.error("Error loading education:", err);
+    container.innerHTML =
+      '<p style="color:#f87171;font-size:0.9rem;">Failed to load education.</p>';
   }
 }
+
+// ---------- Init ----------
 
 document.addEventListener("DOMContentLoaded", () => {
   loadProjects();
   loadResearch();
   loadExperience();
-  loadEducation();   // baru
-  // fungsi init lain tetap
+  loadEducation();
 });
