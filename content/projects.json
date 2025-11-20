@@ -11,7 +11,10 @@
         "Buffer lokal saat koneksi terputus",
         "Grafana dashboard untuk visualisasi"
       ],
-      "image": "/assets/uploads/diagram-blok-tugas-akhir-1-tugas-akhir.drawio.png"
+      "image": "/assets/uploads/diagram-blok-tugas-akhir-1-tugas-akhir.drawio.png",
+      "images": [
+        "https://photos.app.goo.gl/QJ5bwHVLzYazHsPb8"
+      ]
     },
     {
       "title": "Drone VTOL Platform",
