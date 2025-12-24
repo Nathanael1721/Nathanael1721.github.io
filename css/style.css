@@ -730,11 +730,28 @@ a:hover {
 }
 
 .tag-pill {
-  font-size: 0.75rem;
-  padding: 0.2rem 0.55rem;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 999px;
   border: 1px solid var(--pill-border);
   color: var(--fg-muted);
+}
+
+.projects-filters {
+  margin-bottom: 1.25rem;
+  justify-content: center;
+}
+
+.tag-filter {
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.tag-filter.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
 }
 
 /* Responsive */

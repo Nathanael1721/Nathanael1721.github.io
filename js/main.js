@@ -67,7 +67,7 @@ function normalizeBullets(list) {
     .map((item) => {
       if (typeof item === "string") return item;
       if (!item) return "";
-      return item.item || item.value || item.text || "";
+      return item.item || item.value || item.text || item.tag || "";
     })
     .filter(Boolean);
 }
@@ -102,6 +102,7 @@ const modalKicker = document.getElementById("projectModalKicker");
 const modalSummary = document.getElementById("projectModalSummary");
 const modalDetails = document.getElementById("projectModalDetails");
 const modalBullets = document.getElementById("projectModalBullets");
+const modalTags = document.getElementById("projectModalTags");
 const modalImage = document.getElementById("projectModalImage");
 const modalMedia = document.getElementById("projectModalMedia");
 const modalCount = document.getElementById("projectModalCount");
@@ -155,6 +156,17 @@ function openProjectModal(item) {
 
   modalDetails.textContent = item.details || "";
   modalDetails.style.display = item.details ? "block" : "none";
+
+  const tags = normalizeBullets(item.tags);
+  if (modalTags) {
+    if (tags.length) {
+      modalTags.innerHTML = tags.map((t) => `<span class="tag-pill">${t}</span>`).join("");
+      modalTags.style.display = "flex";
+    } else {
+      modalTags.innerHTML = "";
+      modalTags.style.display = "none";
+    }
+  }
 
   const bullets = normalizeBullets(item.bullets);
   if (bullets.length) {
@@ -234,47 +246,103 @@ async function loadProjects() {
     // Determine if we are on the dedicated projects page
     const isProjectsPage = window.location.pathname.includes("projects.html");
     // If not on projects page, limit to first 3
-    const displayItems = isProjectsPage ? items : items.slice(0, 3);
+    const initialItems = isProjectsPage ? items : items.slice(0, 3);
 
-    container.innerHTML = displayItems
-      .map((item, index) => {
-        const title = item.title || "";
-        const kicker = item.kicker || "";
-        const summary = item.summary || "";
-        const bullets = normalizeBullets(item.bullets);
+    function renderProjectCards(list) {
+      container.innerHTML = list
+        .map((item, index) => {
+          const title = item.title || "";
+          const kicker = item.kicker || "";
+          const summary = item.summary || "";
+          const bullets = normalizeBullets(item.bullets);
+          const tags = normalizeBullets(item.tags);
 
-        const imgs = normalizeImages(item);
-        const thumb = imgs.length ? imgs[0] : "";
+          const imgs = normalizeImages(item);
+          const thumb = imgs.length ? imgs[0] : "";
 
-        return `
-          <article class="card card-clickable" data-index="${index}">
-            ${thumb
-            ? `<div class="card-image-wrapper">
-                     <img src="${thumb}" alt="${title} thumbnail">
-                   </div>`
-            : ""
-          }
-            ${kicker ? `<p class="card-kicker">${kicker}</p>` : ""}
-            <h3>${title}</h3>
-            ${summary ? `<p>${summary}</p>` : ""}
-            ${bullets.length
-            ? `<ul class="card-list">
-                     ${bullets.map((b) => `<li>${b}</li>`).join("")}
-                   </ul>`
-            : ""
-          }
-          </article>
-        `;
-      })
-      .join("");
+          return `
+            <article class="card card-clickable" data-index="${index}">
+              ${thumb
+              ? `<div class="card-image-wrapper">
+                       <img src="${thumb}" alt="${title} thumbnail">
+                     </div>`
+              : ""
+            }
+              ${kicker ? `<p class="card-kicker">${kicker}</p>` : ""}
+              <h3>${title}</h3>
+              ${summary ? `<p>${summary}</p>` : ""}
+              ${tags.length
+              ? `<div class="tag-row">
+                       ${tags.map((t) => `<span class="tag-pill">${t}</span>`).join("")}
+                     </div>`
+              : ""
+            }
+              ${bullets.length
+              ? `<ul class="card-list">
+                       ${bullets.map((b) => `<li>${b}</li>`).join("")}
+                     </ul>`
+              : ""
+            }
+            </article>
+          `;
+        })
+        .join("");
 
-    const cards = container.querySelectorAll(".card-clickable");
-    cards.forEach((card, idx) => {
-      card.addEventListener("click", () => {
-        const item = displayItems[idx];
-        if (item) openProjectModal(item);
+      const cards = container.querySelectorAll(".card-clickable");
+      cards.forEach((card, idx) => {
+        card.addEventListener("click", () => {
+          const item = list[idx];
+          if (item) openProjectModal(item);
+        });
       });
-    });
+    }
+
+    renderProjectCards(initialItems);
+
+    if (isProjectsPage) {
+      const filtersEl = document.getElementById("projectsFilters");
+      if (!filtersEl) return;
+
+      const allTags = new Set();
+      items.forEach((item) => {
+        normalizeBullets(item.tags).forEach((tag) => allTags.add(tag));
+      });
+
+      const tags = ["All", ...Array.from(allTags)];
+      let activeTag = "All";
+
+      function renderFilters() {
+        filtersEl.innerHTML = tags
+          .map((tag) => {
+            const isActive = tag === activeTag;
+            return `
+              <button class="tag-pill tag-filter${isActive ? " active" : ""}" type="button" data-tag="${tag}">
+                ${tag}
+              </button>
+            `;
+          })
+          .join("");
+
+        const buttons = filtersEl.querySelectorAll(".tag-filter");
+        buttons.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const nextTag = btn.getAttribute("data-tag") || "All";
+            if (nextTag === activeTag) return;
+            activeTag = nextTag;
+            renderFilters();
+            const filtered =
+              activeTag === "All"
+                ? items
+                : items.filter((item) =>
+                    normalizeBullets(item.tags).includes(activeTag)
+                  );
+            renderProjectCards(filtered);
+          });
+        });
+      }
+
+      renderFilters();
+    }
   } catch (err) {
     console.error(err);
     container.innerHTML =

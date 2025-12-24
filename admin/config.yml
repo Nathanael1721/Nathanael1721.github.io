@@ -33,6 +33,14 @@ collections:
               - { label: "Kicker", name: "kicker", widget: "string", required: false }
               - { label: "Short Summary", name: "summary", widget: "text", required: false }
               - { label: "Details (Modal)", name: "details", widget: "text", required: false }
+              - label: "Tags"
+                name: "tags"
+                widget: "list"
+                required: false
+                field:
+                  label: "Tag"
+                  name: "tag"
+                  widget: "string"
               - { label: "Figma Link", name: "figmaLink", widget: "string", required: false, hint: "URL to Figma case study or prototype" }
 
               # MULTI IMAGE (carousel modal)
