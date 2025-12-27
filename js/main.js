@@ -18,12 +18,14 @@ if (navToggle && navList) {
 const rootEl = document.documentElement;
 const themeToggleBtn = document.getElementById("themeToggle");
 const THEME_STORAGE_KEY = "theme";
+const LEGACY_THEME_KEY = "preferred-theme";
 
 function applyTheme(theme) {
   const value = theme === "light" ? "light" : "dark";
   rootEl.setAttribute("data-theme", value);
   try {
     localStorage.setItem(THEME_STORAGE_KEY, value);
+    localStorage.removeItem(LEGACY_THEME_KEY);
   } catch (_) {
     // abaikan error storage
   }
@@ -34,6 +36,7 @@ function applyTheme(theme) {
   let stored = null;
   try {
     stored = localStorage.getItem(THEME_STORAGE_KEY);
+    if (!stored) stored = localStorage.getItem(LEGACY_THEME_KEY);
   } catch (_) {
     stored = null;
   }
@@ -264,7 +267,7 @@ async function loadProjects() {
             <article class="card card-clickable" data-index="${index}">
               ${thumb
               ? `<div class="card-image-wrapper">
-                       <img src="${thumb}" alt="${title} thumbnail">
+                       <img src="${thumb}" alt="${title} thumbnail" loading="lazy" decoding="async">
                      </div>`
               : ""
             }
