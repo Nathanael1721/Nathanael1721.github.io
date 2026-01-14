@@ -187,6 +187,7 @@ function openProjectModal(item) {
 
     if (hasFigma) {
       modalFigmaLink.href = item.figmaLink;
+      modalFigmaLink.textContent = item.figmaLabel || "View Figma Case Study";
       modalFigmaLink.style.display = "inline-flex";
     } else {
       modalFigmaLink.removeAttribute("href");

@@ -1,6 +1,32 @@
 {
   "items": [
     {
+      "title": "Smart Parking Gate",
+      "kicker": "Computer Vision • IoT • YOLOv8 • MQTT",
+      "summary": "Intelligent parking gate system with computer vision for vehicle detection and automated access control.",
+      "details": "Smart parking access control system that detects vehicles using YOLOv8, controls a gate via servo motor, streams real-time video to a web interface, and uses MQTT for communication. Integrates ultrasonic sensors for distance measurement.",
+      "tags": [
+        "IoT",
+        "Computer Vision"
+      ],
+      "bullets": [
+        "YOLOv8 Object Detection",
+        "Automated Servo Gate Control",
+        "Real-time Video Streaming",
+        "MQTT Decentralized Communication"
+      ],
+      "link": "https://github.com/Nathanael1721/Smart-Parking-Gate",
+      "linkLabel": "Github Link",
+      "figmaLink": "https://photos.app.goo.gl/FndP4WqsEKQpbRaV7",
+      "figmaLabel": "Demo Video",
+      "image": "/assets/uploads/SmartParkingGate1.png",
+      "images": [
+        "/assets/uploads/SmartParkingGate1.png",
+        "/assets/uploads/SmartParkingGate2.png",
+        "/assets/uploads/SmartParkingGate3.png"
+      ]
+    },
+    {
       "title": "Self Hosted Chat-GPT",
       "kicker": "Open Web UI • Docker • Nginx • VPS Tunneling",
       "summary": "Private ChatGPT instance hosted locally and exposed via VPS tunneling.",
