@@ -18,8 +18,10 @@
       "link": "https://gpt.itsnathan.id",
       "linkLabel": "Visit App",
       "figmaLink": "",
-      "image": "",
-      "images": []
+      "image": "/assets/uploads/SelfHostedChat-GPT1.png",
+      "images": [
+        "/assets/uploads/SelfHostedChat-GPT1.png"
+      ]
     },
     {
       "title": "CapySnack Store",
@@ -39,8 +41,10 @@
       "link": "https://capysnack.vercel.app/",
       "linkLabel": "Visit Store",
       "figmaLink": "",
-      "image": "",
-      "images": []
+      "image": "/assets/uploads/CapySnackStore1.png",
+      "images": [
+        "/assets/uploads/CapySnackStore1.png"
+      ]
     },
     {
       "title": "Edge Computing for Smart Agriculture",
@@ -57,10 +61,10 @@
         "Grafana dashboard for visualization"
       ],
       "figmaLink": "",
-      "image": "/assets/uploads/20250116_92749ambygpsmapcamera.jpg",
+      "image": "/assets/uploads/EdgeComputingforSmartAgriculture1.jpg",
       "images": [
-        "/assets/uploads/20250116_92749ambygpsmapcamera.jpg",
-        "/assets/uploads/diagram-blok-tugas-akhir-1-tugas-akhir.drawio.png"
+        "/assets/uploads/EdgeComputingforSmartAgriculture1.jpg",
+        "/assets/uploads/EdgeComputingforSmartAgriculture2.png"
       ]
     },
     {
@@ -77,11 +81,11 @@
         "Autonomous mission and telemetry"
       ],
       "figmaLink": "",
-      "image": "/assets/uploads/img_4692.jpg",
+      "image": "/assets/uploads/DroneVTOLPlatform1.jpg",
       "link": "https://photos.app.goo.gl/TzFwqhgca4BGcJ6E8",
       "linkLabel": "Documentation",
       "images": [
-        "/assets/uploads/img_4692.jpg"
+        "/assets/uploads/DroneVTOLPlatform1.jpg"
       ]
     },
     {
@@ -116,12 +120,12 @@
         "Centralized metrics for multi-service health"
       ],
       "figmaLink": "",
-      "image": "/assets/uploads/grafana%201.png",
+      "image": "/assets/uploads/Centralized%20Monitoring1.png",
       "images": [
-        "/assets/uploads/grafana%201.png",
-        "/assets/uploads/grafana%202.png",
-        "/assets/uploads/grafana%203.png",
-        "/assets/uploads/grafana%204.png"
+        "/assets/uploads/Centralized%20Monitoring1.png",
+        "/assets/uploads/Centralized%20Monitoring2.png",
+        "/assets/uploads/Centralized%20Monitoring3.png",
+        "/assets/uploads/Centralized%20Monitoring4.png"
       ]
     },
     {
@@ -139,9 +143,9 @@
         "Consistent delivery flow across environments"
       ],
       "figmaLink": "",
-      "image": "/assets/uploads/cicd%20implementation.drawio.png",
+      "image": "/assets/uploads/CICD%20Implementation.png",
       "images": [
-        "/assets/uploads/cicd%20implementation.drawio.png"
+        "/assets/uploads/CICD%20Implementation.png"
       ]
     },
     {
@@ -160,8 +164,10 @@
       ],
       "link": "https://capylanguagecourse.vercel.app/",
       "figmaLink": "",
-      "image": "",
-      "images": []
+      "image": "/assets/uploads/CapyLanguageCourseWebsite1.png",
+      "images": [
+        "/assets/uploads/CapyLanguageCourseWebsite1.png"
+      ]
     }
   ]
 }
