@@ -1,6 +1,32 @@
 {
   "items": [
     {
+      "title": "3D Map Model Mapping & Visualization",
+      "kicker": "SLAM LiDar • Cesium • Open Weather API",
+      "summary": "3D Data visualization of NCKU campus using SLAM LiDar, Cesium, and Open Weather API.",
+      "details": "This project was developed for the NCKU LiDar Winter School 2026 held by the Department of Geomatics NCKU. I collected 3D image data using SLAM LiDar and visualized it on a web platform. The web application is built with Cesium and integrates the Open Weather API to simulate weather conditions (like rain) live over the NCKU campus 3D model.",
+      "tags": [
+        "Web",
+        "3D Scanning",
+        "SLAM"
+      ],
+      "bullets": [
+        "3D Data acquisition via SLAM LiDar",
+        "Web visualization using Cesium JS",
+        "Live weather simulation via Open Weather API",
+        "Interactive 3D environment tuning"
+      ],
+      "link": "https://winterschool.vercel.app/",
+      "linkLabel": "Website Project View",
+      "figmaLink": "https://ion.cesium.com/stories/viewer/?id=6f1f1602-0098-4475-ae33-2cd3e425e2a7",
+      "figmaLabel": "Cesium View",
+      "image": "/assets/uploads/NCKULidar1.png",
+      "images": [
+        "/assets/uploads/NCKULidar1.png",
+        "/assets/uploads/NCKULidar2.png"
+      ]
+    },
+    {
       "title": "Smart Parking Gate",
       "kicker": "Computer Vision • IoT • YOLOv8 • MQTT",
       "summary": "Intelligent parking gate system with computer vision for vehicle detection and automated access control.",
