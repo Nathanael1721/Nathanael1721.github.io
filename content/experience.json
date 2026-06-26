@@ -1,6 +1,16 @@
 {
   "items": [
     {
+      "role": "Software Engineer",
+      "org": "普鴻資訊 (Provision Information)",
+      "location": "Taipei, Taiwan",
+      "period": "Mar 2026 - Present",
+      "bullets": [
+        "Develop and maintain secure financial and banking software solutions.",
+        "Collaborate on system integration and payment platform development."
+      ]
+    },
+    {
       "role": "Laboratory Assistant",
       "org": "Telkom University",
       "location": "Surabaya, East Java, Indonesia",
