@@ -3,13 +3,27 @@ const navToggle = document.getElementById("navToggle");
 const navList = document.getElementById("navList");
 
 if (navToggle && navList) {
-  navToggle.addEventListener("click", () => {
-    navList.classList.toggle("show");
+  navToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isExpanded = navList.classList.toggle("show");
+    navToggle.setAttribute("aria-expanded", String(isExpanded));
   });
 
   navList.addEventListener("click", (e) => {
     if (e.target.tagName === "A") {
       navList.classList.remove("show");
+      navToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
+  document.addEventListener("click", (e) => {
+    if (
+      navList.classList.contains("show") &&
+      !navList.contains(e.target) &&
+      !navToggle.contains(e.target)
+    ) {
+      navList.classList.remove("show");
+      navToggle.setAttribute("aria-expanded", "false");
     }
   });
 }
@@ -212,12 +226,14 @@ function openProjectModal(item) {
 
   projectModal.classList.add("show");
   projectModal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
 }
 
 function closeProjectModal() {
   if (!projectModal) return;
   projectModal.classList.remove("show");
   projectModal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
 }
 
 if (projectModalBackdrop) {
@@ -263,7 +279,9 @@ async function loadProjects() {
     const items = Array.isArray(data.items) ? data.items : [];
 
     // Determine if we are on the dedicated projects page
-    const isProjectsPage = window.location.pathname.includes("projects.html");
+    const isProjectsPage =
+      !!document.getElementById("projectsFilters") ||
+      window.location.pathname.includes("projects.html");
     // If not on projects page, limit to first 3
     const initialItems = isProjectsPage ? items : items.slice(0, 3);
 
@@ -515,7 +533,9 @@ async function loadHonors() {
     const items = Array.isArray(data.items) ? data.items : [];
 
     // Determine if we are on the dedicated honors page
-    const isHonorsPage = window.location.pathname.includes("honors.html");
+    const isHonorsPage =
+      !!document.querySelector(".honors-page-header") ||
+      window.location.pathname.includes("honors.html");
     // If not on honors page, limit to first 3
     const displayItems = isHonorsPage ? items : items.slice(0, 3);
 

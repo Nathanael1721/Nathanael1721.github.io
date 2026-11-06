@@ -695,6 +695,7 @@ a:hover {
   color: var(--fg-muted);
   font-size: 1.4rem;
   cursor: pointer;
+  z-index: 10;
 }
 
 .modal-close:hover {
