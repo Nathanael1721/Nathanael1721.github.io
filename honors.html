@@ -6,10 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Honors & Achievements | Nathanael Tjahyadi</title>
     <meta name="description" content="Honors, awards, and achievements of Nathanael Tjahyadi." />
+    <meta name="author" content="Nathanael Tjahyadi" />
+    <meta name="robots" content="index, follow" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/favicon-192.png" />
+    <link rel="canonical" href="https://itsnathan.id/honors.html" />
+    <meta property="og:title" content="Honors & Achievements | Nathanael Tjahyadi" />
+    <meta property="og:description" content="Honors, awards, and achievements of Nathanael Tjahyadi." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://itsnathan.id/honors.html" />
+    <meta property="og:site_name" content="Nathanael Tjahyadi" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Honors & Achievements | Nathanael Tjahyadi" />
+    <meta name="twitter:description" content="Honors, awards, and achievements of Nathanael Tjahyadi." />
     <script>
         (function () {
             try {
-                const stored = localStorage.getItem("preferred-theme");
+                const key = "theme";
+                const legacyKey = "preferred-theme";
+                let stored = localStorage.getItem(key);
+                if (!stored) stored = localStorage.getItem(legacyKey);
                 const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
                 const theme =
                     stored === "light" || stored === "dark"
@@ -23,8 +41,7 @@
             }
         })();
     </script>
-    <link rel="icon" href="https://itsnathan.id/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css?v=2.0" />
     <style>
         .honors-page-header {
             padding-top: 6rem;
@@ -42,7 +59,7 @@
                 <a href="index.html">Nathan</a>
             </div>
             <nav class="nav">
-                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
                     ☰
                 </button>
                 <ul class="nav-list" id="navList">
@@ -53,7 +70,7 @@
                     <li><a href="index.html#experience">Experience</a></li>
                     <li><a href="index.html#education">Education</a></li>
                     <li><a href="honors.html" class="active">Honors</a></li>
-                    <li><a href="http://medium.com/@nathanael17" target="_blank" rel="noopener noreferrer">Blog</a></li>
+                    <li><a href="https://medium.com/@nathanael17" target="_blank" rel="noopener noreferrer">Blog</a></li>
                     <li><a href="index.html#contact">Contact</a></li>
                 </ul>
 

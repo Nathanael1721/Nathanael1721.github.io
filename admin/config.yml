@@ -41,7 +41,10 @@ collections:
                   label: "Tag"
                   name: "tag"
                   widget: "string"
-              - { label: "Figma Link", name: "figmaLink", widget: "string", required: false, hint: "URL to Figma case study or prototype" }
+              - { label: "Website / Repo Link", name: "link", widget: "string", required: false, hint: "URL to live project or repository" }
+              - { label: "Website / Repo Button Label", name: "linkLabel", widget: "string", required: false, hint: "Custom button text (default: Visit Website)" }
+              - { label: "Figma / Secondary Link", name: "figmaLink", widget: "string", required: false, hint: "URL to Figma case study, demo video, or 3D viewer" }
+              - { label: "Figma / Secondary Button Label", name: "figmaLabel", widget: "string", required: false, hint: "Custom button text (default: View Figma Case Study)" }
 
               # MULTI IMAGE (carousel modal)
               - label: "Images"
