@@ -1,19 +1,20 @@
-// ---------- Mobile nav toggle ----------
 const navToggle = document.getElementById("navToggle");
 const navList = document.getElementById("navList");
+
+function setNavOpen(open) {
+  navList.classList.toggle("show", open);
+  navToggle.setAttribute("aria-expanded", String(open));
+  navToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+}
 
 if (navToggle && navList) {
   navToggle.addEventListener("click", (e) => {
     e.stopPropagation();
-    const isExpanded = navList.classList.toggle("show");
-    navToggle.setAttribute("aria-expanded", String(isExpanded));
+    setNavOpen(!navList.classList.contains("show"));
   });
 
   navList.addEventListener("click", (e) => {
-    if (e.target.tagName === "A") {
-      navList.classList.remove("show");
-      navToggle.setAttribute("aria-expanded", "false");
-    }
+    if (e.target.closest("a")) setNavOpen(false);
   });
 
   document.addEventListener("click", (e) => {
@@ -22,64 +23,66 @@ if (navToggle && navList) {
       !navList.contains(e.target) &&
       !navToggle.contains(e.target)
     ) {
-      navList.classList.remove("show");
-      navToggle.setAttribute("aria-expanded", "false");
+      setNavOpen(false);
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navList.classList.contains("show")) {
+      setNavOpen(false);
+      navToggle.focus();
     }
   });
 }
 
-// ---------- Theme toggle (slider sun / moon) ----------
 const rootEl = document.documentElement;
 const themeToggleBtn = document.getElementById("themeToggle");
 const THEME_STORAGE_KEY = "theme";
 const LEGACY_THEME_KEY = "preferred-theme";
 
-function applyTheme(theme) {
-  const value = theme === "light" ? "light" : "dark";
+function applyTheme(theme, persist) {
+  const value = theme === "dark" ? "dark" : "light";
   rootEl.setAttribute("data-theme", value);
+  if (themeToggleBtn) {
+    themeToggleBtn.setAttribute(
+      "aria-label",
+      value === "dark" ? "Switch to light theme" : "Switch to dark theme"
+    );
+  }
+  if (!persist) return;
   try {
     localStorage.setItem(THEME_STORAGE_KEY, value);
     localStorage.removeItem(LEGACY_THEME_KEY);
-  } catch (_) {
-    // abaikan error storage
-  }
+  } catch (_) {}
 }
 
-// inisialisasi theme dari localStorage / prefers-color-scheme
-(function initTheme() {
-  let stored = null;
-  try {
-    stored = localStorage.getItem(THEME_STORAGE_KEY);
-    if (!stored) stored = localStorage.getItem(LEGACY_THEME_KEY);
-  } catch (_) {
-    stored = null;
-  }
-
-  const prefersDark =
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-  const initial = stored || (prefersDark ? "dark" : "light");
-  applyTheme(initial);
-})();
+// The inline head script already resolved the theme; only sync the label here.
+applyTheme(rootEl.getAttribute("data-theme"), false);
 
 if (themeToggleBtn) {
   themeToggleBtn.addEventListener("click", () => {
-    const current = rootEl.getAttribute("data-theme") || "dark";
-    const next = current === "dark" ? "light" : "dark";
-    applyTheme(next);
+    const next = rootEl.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    applyTheme(next, true);
   });
 }
 
-// ---------- Dynamic year ----------
 const yearSpan = document.getElementById("year");
 if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear();
 }
 
-// ---------- Helpers ----------
+// Content comes from the CMS, so escape it before it goes into innerHTML.
+function esc(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function normalizeBullets(list) {
-  if (!list || !Array.isArray(list)) return [];
+  if (!Array.isArray(list)) return [];
   return list
     .map((item) => {
       if (typeof item === "string") return item;
@@ -91,29 +94,64 @@ function normalizeBullets(list) {
 
 function normalizeImages(item) {
   const imgs = [];
-
-  if (item.image) {
-    imgs.push(item.image);
-  }
-
+  if (item.image) imgs.push(item.image);
   if (Array.isArray(item.images)) {
     item.images.forEach((img) => {
-      if (typeof img === "string") {
-        if (!imgs.includes(img)) imgs.push(img);
-      } else if (img && (img.src || img.path || img.url)) {
-        const src = img.src || img.path || img.url;
-        if (!imgs.includes(src)) imgs.push(src);
-      }
+      const src = typeof img === "string" ? img : img && (img.src || img.path || img.url);
+      if (src && !imgs.includes(src)) imgs.push(src);
     });
   }
-
   return imgs;
 }
 
-// ---------- Modal state & elements ----------
+function setCount(id, count) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = ` (${count})`;
+}
+
+function renderLoading(container, label) {
+  container.innerHTML = `
+    <div class="state-notice" aria-live="polite">
+      <p class="state-notice-title">Loading ${esc(label)}…</p>
+    </div>
+  `;
+}
+
+function renderEmpty(container, title, desc, action) {
+  container.innerHTML = `
+    <div class="state-notice">
+      <p class="state-notice-title">${esc(title)}</p>
+      <p class="state-notice-desc">${esc(desc)}</p>
+      ${action ? `<button type="button" class="btn ghost-btn state-action-btn">${esc(action.label)}</button>` : ""}
+    </div>
+  `;
+  if (action) {
+    container.querySelector(".state-action-btn").addEventListener("click", action.onClick);
+  }
+}
+
+function renderError(container, label, retryFn) {
+  container.innerHTML = `
+    <div class="state-notice state-error" role="alert">
+      <p class="state-notice-title">Couldn't load ${esc(label)}.</p>
+      <p class="state-notice-desc">Check your connection, then try again.</p>
+      <button type="button" class="btn ghost-btn state-action-btn">Try again</button>
+    </div>
+  `;
+  container.querySelector(".state-action-btn").addEventListener("click", retryFn);
+}
+
+async function fetchItems(file) {
+  const res = await fetch(file, { cache: "no-store" });
+  if (!res.ok) throw new Error(`Failed to load ${file}`);
+  const data = await res.json();
+  return Array.isArray(data.items) ? data.items : [];
+}
+
 const projectModal = document.getElementById("projectModal");
 const projectModalBackdrop = document.getElementById("projectModalBackdrop");
 const projectModalClose = document.getElementById("projectModalClose");
+const modalDialog = projectModal ? projectModal.querySelector(".modal-dialog") : null;
 const modalTitle = document.getElementById("projectModalTitle");
 const modalKicker = document.getElementById("projectModalKicker");
 const modalSummary = document.getElementById("projectModalSummary");
@@ -131,94 +169,65 @@ const modalSiteLink = document.getElementById("projectModalSite");
 
 let currentImages = [];
 let currentImageIndex = 0;
+let lastFocusedTrigger = null;
+
+function setText(el, text) {
+  el.textContent = text || "";
+  el.style.display = text ? "" : "none";
+}
 
 function renderProjectModalImage() {
-  if (!modalImage || !modalMedia) return;
-
   if (!currentImages.length) {
     modalMedia.style.display = "none";
     return;
   }
+  modalMedia.style.display = "";
+  modalImage.src = currentImages[currentImageIndex];
+  modalImage.alt = `${modalTitle.textContent || "Project"}, image ${currentImageIndex + 1}`;
 
-  modalMedia.style.display = "flex";
+  const multiple = currentImages.length > 1;
+  modalCount.textContent = multiple ? `${currentImageIndex + 1} / ${currentImages.length}` : "";
+  modalPrev.style.display = multiple ? "" : "none";
+  modalNext.style.display = multiple ? "" : "none";
+}
 
-  if (currentImageIndex < 0) currentImageIndex = 0;
-  if (currentImageIndex >= currentImages.length) {
-    currentImageIndex = currentImages.length - 1;
-  }
+function stepImage(delta) {
+  if (currentImages.length < 2) return;
+  currentImageIndex = (currentImageIndex + delta + currentImages.length) % currentImages.length;
+  renderProjectModalImage();
+}
 
-  const src = currentImages[currentImageIndex];
-  modalImage.src = src;
-  modalImage.alt = modalTitle.textContent || "Project image";
-
-  if (currentImages.length > 1) {
-    modalCount.textContent = `${currentImageIndex + 1} / ${currentImages.length}`;
-    modalPrev.style.display = "flex";
-    modalNext.style.display = "flex";
+function setModalLink(el, href, label) {
+  if (href) {
+    el.href = href;
+    el.textContent = label;
+    el.style.display = "";
   } else {
-    modalCount.textContent = "";
-    modalPrev.style.display = "none";
-    modalNext.style.display = "none";
+    el.removeAttribute("href");
+    el.style.display = "none";
   }
 }
 
-function openProjectModal(item) {
+function openProjectModal(item, triggerEl) {
   if (!projectModal) return;
+  lastFocusedTrigger = triggerEl || document.activeElement;
 
   modalTitle.textContent = item.title || "";
-  modalKicker.textContent = item.kicker || "";
-  modalKicker.style.display = item.kicker ? "block" : "none";
-
-  modalSummary.textContent = item.summary || "";
-  modalSummary.style.display = item.summary ? "block" : "none";
-
-  modalDetails.textContent = item.details || "";
-  modalDetails.style.display = item.details ? "block" : "none";
+  setText(modalKicker, item.kicker);
+  setText(modalSummary, item.summary);
+  setText(modalDetails, item.details);
 
   const tags = normalizeBullets(item.tags);
-  if (modalTags) {
-    if (tags.length) {
-      modalTags.innerHTML = tags.map((t) => `<span class="tag-pill">${t}</span>`).join("");
-      modalTags.style.display = "flex";
-    } else {
-      modalTags.innerHTML = "";
-      modalTags.style.display = "none";
-    }
-  }
+  modalTags.innerHTML = tags.map((t) => `<span class="tag-chip">${esc(t)}</span>`).join("");
+  modalTags.style.display = tags.length ? "" : "none";
 
   const bullets = normalizeBullets(item.bullets);
-  if (bullets.length) {
-    modalBullets.innerHTML = bullets.map((b) => `<li>${b}</li>`).join("");
-    modalBullets.style.display = "block";
-  } else {
-    modalBullets.innerHTML = "";
-    modalBullets.style.display = "none";
-  }
+  modalBullets.innerHTML = bullets.map((b) => `<li>${esc(b)}</li>`).join("");
+  modalBullets.style.display = bullets.length ? "" : "none";
 
-  if (modalActions && modalFigmaLink && modalSiteLink) {
-    const hasFigma = !!item.figmaLink;
-    const hasSite = !!item.link;
-
-    if (hasFigma) {
-      modalFigmaLink.href = item.figmaLink;
-      modalFigmaLink.textContent = item.figmaLabel || "View Figma Case Study";
-      modalFigmaLink.style.display = "inline-flex";
-    } else {
-      modalFigmaLink.removeAttribute("href");
-      modalFigmaLink.style.display = "none";
-    }
-
-    if (hasSite) {
-      modalSiteLink.href = item.link;
-      modalSiteLink.textContent = item.linkLabel || "Visit Website";
-      modalSiteLink.style.display = "inline-flex";
-    } else {
-      modalSiteLink.removeAttribute("href");
-      modalSiteLink.style.display = "none";
-    }
-
-    modalActions.style.display = hasFigma || hasSite ? "flex" : "none";
-  }
+  setModalLink(modalFigmaLink, item.figmaLink, item.figmaLabel || "View Figma Case Study");
+  setModalLink(modalSiteLink, item.link, item.linkLabel || "Visit Website");
+  modalActions.style.display = item.figmaLink || item.link ? "" : "none";
 
   currentImages = normalizeImages(item);
   currentImageIndex = 0;
@@ -227,355 +236,306 @@ function openProjectModal(item) {
   projectModal.classList.add("show");
   projectModal.setAttribute("aria-hidden", "false");
   document.body.style.overflow = "hidden";
+  projectModalClose.focus();
 }
 
 function closeProjectModal() {
-  if (!projectModal) return;
+  if (!projectModal || !projectModal.classList.contains("show")) return;
   projectModal.classList.remove("show");
   projectModal.setAttribute("aria-hidden", "true");
   document.body.style.overflow = "";
-}
-
-if (projectModalBackdrop) {
-  projectModalBackdrop.addEventListener("click", closeProjectModal);
-}
-if (projectModalClose) {
-  projectModalClose.addEventListener("click", closeProjectModal);
-}
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && projectModal?.classList.contains("show")) {
-    closeProjectModal();
+  if (lastFocusedTrigger && typeof lastFocusedTrigger.focus === "function") {
+    lastFocusedTrigger.focus();
   }
-});
+}
 
-if (modalPrev) {
-  modalPrev.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if (!currentImages.length) return;
-    currentImageIndex =
-      (currentImageIndex - 1 + currentImages.length) % currentImages.length;
-    renderProjectModalImage();
+// Keep Tab inside the dialog while it is open (aria-modal).
+function trapFocus(e) {
+  const focusable = Array.from(
+    modalDialog.querySelectorAll("button, a[href]")
+  ).filter((el) => el.offsetParent !== null);
+  if (!focusable.length) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
+}
+
+if (projectModal) {
+  projectModalBackdrop.addEventListener("click", closeProjectModal);
+  projectModalClose.addEventListener("click", closeProjectModal);
+  modalPrev.addEventListener("click", () => stepImage(-1));
+  modalNext.addEventListener("click", () => stepImage(1));
+
+  document.addEventListener("keydown", (e) => {
+    if (!projectModal.classList.contains("show")) return;
+    if (e.key === "Escape") closeProjectModal();
+    else if (e.key === "ArrowLeft") stepImage(-1);
+    else if (e.key === "ArrowRight") stepImage(1);
+    else if (e.key === "Tab") trapFocus(e);
   });
 }
 
-if (modalNext) {
-  modalNext.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if (!currentImages.length) return;
-    currentImageIndex = (currentImageIndex + 1) % currentImages.length;
-    renderProjectModalImage();
-  });
+function projectCardHtml(item, index, isFlagship) {
+  const title = item.title || "";
+  const bullets = normalizeBullets(item.bullets);
+  const tags = normalizeBullets(item.tags);
+  const thumb = normalizeImages(item)[0];
+  const imgAttrs = index === 0 ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"';
+
+  // The image button duplicates "View details", so it stays out of the tab order.
+  const media = thumb
+    ? `<button type="button" class="card-image-wrapper" data-open="${index}" tabindex="-1" aria-hidden="true">
+         <img src="${esc(thumb)}" alt="" width="800" height="500" ${imgAttrs} />
+       </button>`
+    : "";
+
+  return `
+    <article class="project-card${isFlagship ? " project-card--flagship" : ""}">
+      ${media}
+      <div class="project-body">
+        ${item.kicker ? `<p class="project-kicker">${esc(item.kicker)}</p>` : ""}
+        <h3>${esc(title)}</h3>
+        ${item.summary ? `<p class="project-summary">${esc(item.summary)}</p>` : ""}
+        ${isFlagship && bullets.length ? `<ul class="card-list">${bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}
+        <div class="project-footer">
+          ${tags.length ? `<div class="tag-row">${tags.map((t) => `<span class="tag-chip">${esc(t)}</span>`).join("")}</div>` : ""}
+          <button type="button" class="project-card-trigger" data-open="${index}" aria-label="View details: ${esc(title)}">View details</button>
+        </div>
+      </div>
+    </article>
+  `;
 }
 
-// ---------- Projects (cards + thumbnails) ----------
 async function loadProjects() {
   const container = document.getElementById("projectsGrid");
   if (!container) return;
+  renderLoading(container, "projects");
 
+  let items;
   try {
-    const res = await fetch("content/projects.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load projects.json");
-    const data = await res.json();
-    const items = Array.isArray(data.items) ? data.items : [];
-
-    // Determine if we are on the dedicated projects page
-    const isProjectsPage =
-      !!document.getElementById("projectsFilters") ||
-      window.location.pathname.includes("projects.html");
-    // If not on projects page, limit to first 3
-    const initialItems = isProjectsPage ? items : items.slice(0, 3);
-
-    function renderProjectCards(list) {
-      container.innerHTML = list
-        .map((item, index) => {
-          const title = item.title || "";
-          const kicker = item.kicker || "";
-          const summary = item.summary || "";
-          const bullets = normalizeBullets(item.bullets);
-          const tags = normalizeBullets(item.tags);
-
-          const imgs = normalizeImages(item);
-          const thumb = imgs.length ? imgs[0] : "";
-
-          return `
-            <article class="card card-clickable" data-index="${index}">
-              ${thumb
-              ? `<div class="card-image-wrapper">
-                       <img src="${thumb}" alt="${title} thumbnail" loading="lazy" decoding="async">
-                     </div>`
-              : ""
-            }
-              ${kicker ? `<p class="card-kicker">${kicker}</p>` : ""}
-              <h3>${title}</h3>
-              ${summary ? `<p>${summary}</p>` : ""}
-              ${tags.length
-              ? `<div class="tag-row">
-                       ${tags.map((t) => `<span class="tag-pill">${t}</span>`).join("")}
-                     </div>`
-              : ""
-            }
-              ${bullets.length
-              ? `<ul class="card-list">
-                       ${bullets.map((b) => `<li>${b}</li>`).join("")}
-                     </ul>`
-              : ""
-            }
-            </article>
-          `;
-        })
-        .join("");
-
-      const cards = container.querySelectorAll(".card-clickable");
-      cards.forEach((card, idx) => {
-        card.addEventListener("click", () => {
-          const item = list[idx];
-          if (item) openProjectModal(item);
-        });
-      });
-    }
-
-    renderProjectCards(initialItems);
-
-    if (isProjectsPage) {
-      const filtersEl = document.getElementById("projectsFilters");
-      if (!filtersEl) return;
-
-      const allTags = new Set();
-      items.forEach((item) => {
-        normalizeBullets(item.tags).forEach((tag) => allTags.add(tag));
-      });
-
-      const tags = ["All", ...Array.from(allTags)];
-      let activeTag = "All";
-
-      function renderFilters() {
-        filtersEl.innerHTML = tags
-          .map((tag) => {
-            const isActive = tag === activeTag;
-            return `
-              <button class="tag-pill tag-filter${isActive ? " active" : ""}" type="button" data-tag="${tag}">
-                ${tag}
-              </button>
-            `;
-          })
-          .join("");
-
-        const buttons = filtersEl.querySelectorAll(".tag-filter");
-        buttons.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const nextTag = btn.getAttribute("data-tag") || "All";
-            if (nextTag === activeTag) return;
-            activeTag = nextTag;
-            renderFilters();
-            const filtered =
-              activeTag === "All"
-                ? items
-                : items.filter((item) =>
-                  normalizeBullets(item.tags).includes(activeTag)
-                );
-            renderProjectCards(filtered);
-          });
-        });
-      }
-
-      renderFilters();
-    }
+    items = await fetchItems("content/projects.json");
   } catch (err) {
     console.error(err);
-    container.innerHTML =
-      '<p style="color:#f87171;font-size:0.9rem;">Failed to load projects.</p>';
+    renderError(container, "projects", loadProjects);
+    return;
   }
+
+  setCount("projectsCount", items.length);
+  const filtersEl = document.getElementById("projectsFilters");
+  const isArchive = !!filtersEl;
+
+  function renderCards(list, resetFn) {
+    if (!list.length) {
+      renderEmpty(
+        container,
+        resetFn ? "No projects with this tag." : "No projects yet.",
+        resetFn ? "Pick another tag or show everything." : "Projects added in the CMS will appear here.",
+        resetFn ? { label: "Show all projects", onClick: resetFn } : null
+      );
+      return;
+    }
+    container.innerHTML = list
+      .map((item, i) => projectCardHtml(item, i, !isArchive && i === 0))
+      .join("");
+    container.querySelectorAll("[data-open]").forEach((el) => {
+      el.addEventListener("click", () => {
+        const item = list[Number(el.getAttribute("data-open"))];
+        const trigger = container.querySelector(
+          `.project-card-trigger[data-open="${el.getAttribute("data-open")}"]`
+        );
+        if (item) openProjectModal(item, trigger);
+      });
+    });
+  }
+
+  if (!isArchive) {
+    renderCards(items.slice(0, 3));
+    return;
+  }
+
+  const tagCounts = new Map();
+  items.forEach((item) => {
+    normalizeBullets(item.tags).forEach((tag) => {
+      tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1);
+    });
+  });
+  const tags = ["All", ...tagCounts.keys()];
+  let activeTag = "All";
+
+  function applyFilter(tag) {
+    activeTag = tag;
+    filtersEl.querySelectorAll(".tag-filter").forEach((btn) => {
+      const isActive = btn.getAttribute("data-tag") === tag;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-pressed", String(isActive));
+    });
+    const filtered =
+      tag === "All" ? items : items.filter((i) => normalizeBullets(i.tags).includes(tag));
+    renderCards(filtered, () => applyFilter("All"));
+  }
+
+  filtersEl.innerHTML = tags
+    .map((tag) => {
+      const count = tag === "All" ? items.length : tagCounts.get(tag);
+      return `<button class="tag-filter" type="button" data-tag="${esc(tag)}" aria-pressed="false">${esc(tag)} (${count})</button>`;
+    })
+    .join("");
+  filtersEl.querySelectorAll(".tag-filter").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const tag = btn.getAttribute("data-tag");
+      if (tag !== activeTag) applyFilter(tag);
+    });
+  });
+  applyFilter("All");
 }
 
-// ---------- Research ----------
 async function loadResearch() {
   const container = document.getElementById("researchList");
   if (!container) return;
+  renderLoading(container, "publications");
 
   try {
-    const res = await fetch("content/research.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load research.json");
-    const data = await res.json();
-    const items = Array.isArray(data.items) ? data.items : [];
-
-    container.innerHTML = "";
-
-    items.forEach((item) => {
-      const el = document.createElement("article");
-      el.className = "research-item";
-
-      const tagsHtml = normalizeBullets(item.tags)
-        .map((t) => `<span class="tag-pill">${t}</span>`)
-        .join("");
-
-      el.innerHTML = `
-        <h3>${item.title || ""}</h3>
-        <p class="research-meta">
-          ${item.venue || ""}${item.year ? " · " + item.year : ""}
-        </p>
-        <p>${item.summary || ""}</p>
-        ${item.link
-          ? `<p><a href="${item.link}" target="_blank" rel="noopener noreferrer">View publication</a></p>`
-          : ""
-        }
-        ${tagsHtml
-          ? `<div class="tag-row">
-                 ${tagsHtml}
-               </div>`
-          : ""
-        }
-      `;
-
-      container.appendChild(el);
-    });
+    const items = await fetchItems("content/research.json");
+    if (!items.length) {
+      renderEmpty(container, "No publications yet.", "Papers added in the CMS will appear here.");
+      return;
+    }
+    container.innerHTML = items
+      .map((item) => {
+        const tags = normalizeBullets(item.tags);
+        return `
+          <article class="research-entry">
+            <div class="research-meta">
+              <span class="research-year">${esc(item.year)}</span>
+              <span class="research-venue">${esc(item.venue)}</span>
+            </div>
+            <div class="research-main">
+              <h3>${esc(item.title)}</h3>
+              ${item.summary ? `<p>${esc(item.summary)}</p>` : ""}
+              ${tags.length ? `<div class="tag-row">${tags.map((t) => `<span class="tag-chip">${esc(t)}</span>`).join("")}</div>` : ""}
+            </div>
+            <div class="research-action">
+              ${item.link ? `<a href="${esc(item.link)}" class="btn ghost-btn" target="_blank" rel="noopener noreferrer">Read Paper</a>` : ""}
+            </div>
+          </article>
+        `;
+      })
+      .join("");
   } catch (err) {
     console.error(err);
-    container.innerHTML =
-      '<p style="color:#f87171;font-size:0.9rem;">Failed to load research.</p>';
+    renderError(container, "publications", loadResearch);
   }
 }
 
-// ---------- Experience ----------
+function timelineItemHtml(title, period, org, bullets) {
+  return `
+    <article class="timeline-item">
+      <div class="timeline-header">
+        <h3>${esc(title)}</h3>
+        <span class="timeline-period">${esc(period)}</span>
+      </div>
+      ${org ? `<p class="timeline-org">${esc(org)}</p>` : ""}
+      ${bullets.length ? `<ul>${bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}
+    </article>
+  `;
+}
+
 async function loadExperience() {
   const container = document.getElementById("experienceTimeline");
   if (!container) return;
+  renderLoading(container, "experience");
 
   try {
-    const res = await fetch("content/experience.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load experience.json");
-    const data = await res.json();
-    const items = Array.isArray(data.items) ? data.items : [];
-
-    container.innerHTML = "";
-
-    items.forEach((item) => {
-      const el = document.createElement("div");
-      el.className = "timeline-item";
-
-      const bulletsHtml = normalizeBullets(item.bullets)
-        .map((b) => `<li>${b}</li>`)
-        .join("");
-
-      el.innerHTML = `
-        <h3>${item.role || ""}</h3>
-        <p class="timeline-org">${item.org || ""}</p>
-        <p class="timeline-meta">
-          ${item.period || ""}${item.location ? " | " + item.location : ""}
-        </p>
-        ${bulletsHtml
-          ? `<ul>
-                 ${bulletsHtml}
-               </ul>`
-          : ""
-        }
-      `;
-
-      container.appendChild(el);
-    });
+    const items = await fetchItems("content/experience.json");
+    if (!items.length) {
+      renderEmpty(container, "No experience entries yet.", "Roles added in the CMS will appear here.");
+      return;
+    }
+    container.innerHTML = items
+      .map((item) =>
+        timelineItemHtml(
+          item.role,
+          item.period,
+          [item.org, item.location].filter(Boolean).join(" · "),
+          normalizeBullets(item.bullets)
+        )
+      )
+      .join("");
   } catch (err) {
     console.error(err);
-    container.innerHTML =
-      '<p style="color:#f87171;font-size:0.9rem;">Failed to load experience.</p>';
+    renderError(container, "experience", loadExperience);
   }
 }
 
-// ---------- Education ----------
 async function loadEducation() {
   const container = document.getElementById("educationTimeline");
   if (!container) return;
+  renderLoading(container, "education");
 
   try {
-    const res = await fetch("content/education.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to fetch education");
-    const data = await res.json();
-    const items = Array.isArray(data.items) ? data.items : [];
-
+    const items = await fetchItems("content/education.json");
+    if (!items.length) {
+      renderEmpty(container, "No education entries yet.", "Degrees added in the CMS will appear here.");
+      return;
+    }
     container.innerHTML = items
-      .map((item) => {
-        const degree = item.degree || "";
-        const school = item.school || "";
-        const location = item.location || "";
-        const period = item.period || "";
-
-        const bullets = normalizeBullets(item.details);
-
-        return `
-          <article class="timeline-item">
-            <h3>${degree}</h3>
-            <p class="timeline-org">${school}</p>
-            <p class="timeline-meta">
-              ${[period, location].filter(Boolean).join(" · ")}
-            </p>
-            ${bullets.length
-            ? `<ul>${bullets.map((b) => `<li>${b}</li>`).join("")}</ul>`
-            : ""
-          }
-          </article>
-        `;
-      })
-      .join("");
-  } catch (err) {
-    console.error("Error loading education:", err);
-    container.innerHTML =
-      '<p style="color:#f87171;font-size:0.9rem;">Failed to load education.</p>';
-  }
-}
-
-// ---------- Honors ----------
-async function loadHonors() {
-  const container = document.getElementById("honorsGrid");
-  if (!container) return;
-
-  try {
-    const res = await fetch("content/honors.json", { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load honors");
-    const data = await res.json();
-    const items = Array.isArray(data.items) ? data.items : [];
-
-    // Determine if we are on the dedicated honors page
-    const isHonorsPage =
-      !!document.querySelector(".honors-page-header") ||
-      window.location.pathname.includes("honors.html");
-    // If not on honors page, limit to first 3
-    const displayItems = isHonorsPage ? items : items.slice(0, 3);
-
-    container.innerHTML = displayItems
-      .map((item, index) => {
-        const issuer = item.issuer ? `<span>${item.issuer}</span>` : "";
-        const period = item.period ? `<span>${item.period}</span>` : "";
-        const association = item.association
-          ? `<span>${item.association}</span>`
-          : "";
-
-        const metaSegments = [issuer, period].filter(Boolean).join(" · ");
-        const associationLine = association
-          ? `<p class="honor-meta">${association}</p>`
-          : "";
-
-        return `
-          <article class="honor-card">
-            <h3 class="honor-title">${item.title || ""}</h3>
-            ${metaSegments
-            ? `<p class="honor-meta">${metaSegments}</p>`
-            : ""
-          }
-            ${associationLine}
-            ${item.summary
-            ? `<p class="honor-summary">${item.summary}</p>`
-            : ""
-          }
-          </article>
-        `;
-      })
+      .map((item) =>
+        timelineItemHtml(
+          item.degree,
+          item.period,
+          [item.school, item.location].filter(Boolean).join(" · "),
+          normalizeBullets(item.details)
+        )
+      )
       .join("");
   } catch (err) {
     console.error(err);
-    container.innerHTML =
-      '<p style="color:#f87171;font-size:0.9rem;">Failed to load honors.</p>';
+    renderError(container, "education", loadEducation);
   }
 }
 
-// ---------- Init ----------
+async function loadHonors() {
+  const container = document.getElementById("honorsGrid");
+  if (!container) return;
+  renderLoading(container, "honors");
+
+  try {
+    const items = await fetchItems("content/honors.json");
+    setCount("honorsCount", items.length);
+
+    const isHonorsPage = document.body.getAttribute("data-page") === "honors";
+    const displayItems = isHonorsPage ? items : items.slice(0, 4);
+
+    if (!displayItems.length) {
+      renderEmpty(container, "No honors yet.", "Awards added in the CMS will appear here.");
+      return;
+    }
+    container.innerHTML = displayItems
+      .map(
+        (item) => `
+          <article class="honor-row">
+            <div class="honor-period">${esc(item.period)}</div>
+            <div>
+              <h3 class="honor-title">${esc(item.title)}</h3>
+              ${item.summary ? `<p class="honor-summary">${esc(item.summary)}</p>` : ""}
+            </div>
+            <div class="honor-issuer">${esc([item.issuer, item.association].filter(Boolean).join(" · "))}</div>
+          </article>
+        `
+      )
+      .join("");
+  } catch (err) {
+    console.error(err);
+    renderError(container, "honors", loadHonors);
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   loadProjects();
   loadResearch();
