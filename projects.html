@@ -2,173 +2,160 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Projects | Nathanael Tjahyadi</title>
-    <meta name="description" content="All projects by Nathanael Tjahyadi in IoT, Edge Computing, and DevOps." />
-    <meta name="author" content="Nathanael Tjahyadi" />
-    <meta name="robots" content="index, follow" />
-    <meta name="color-scheme" content="light dark" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
-    <link rel="icon" href="/favicon-192.png" type="image/png" />
-    <link rel="apple-touch-icon" href="/favicon-192.png" />
-    <link rel="canonical" href="https://itsnathan.id/projects.html" />
-    <meta property="og:title" content="Projects | Nathanael Tjahyadi" />
-    <meta property="og:description" content="All projects by Nathanael Tjahyadi in IoT, Edge Computing, and DevOps." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://itsnathan.id/projects.html" />
-    <meta property="og:site_name" content="Nathanael Tjahyadi" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Projects | Nathanael Tjahyadi" />
-    <meta name="twitter:description" content="All projects by Nathanael Tjahyadi in IoT, Edge Computing, and DevOps." />
-    <script>
-        (function () {
-            try {
-                const key = "theme";
-                const legacyKey = "preferred-theme";
-                let stored = localStorage.getItem(key);
-                if (!stored) stored = localStorage.getItem(legacyKey);
-                const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-                const theme =
-                    stored === "light" || stored === "dark"
-                        ? stored
-                        : systemDark
-                            ? "dark"
-                            : "light";
-                document.documentElement.setAttribute("data-theme", theme);
-            } catch (err) {
-                document.documentElement.setAttribute("data-theme", "dark");
-            }
-        })();
-    </script>
-    <link rel="stylesheet" href="css/style.css?v=2.0" />
-    <style>
-        /* Inline adjustment for projects page spacing if needed */
-        .projects-page-header {
-            padding-top: 6rem;
-            padding-bottom: 2rem;
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | Nathanael Tjahyadi</title>
+  <meta name="description" content="All projects by Nathanael Tjahyadi across IoT, edge computing, UAVs, and DevOps." />
+  <meta name="author" content="Nathanael Tjahyadi" />
+  <meta name="robots" content="index, follow" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" href="/favicon-192.png" type="image/png" />
+  <link rel="apple-touch-icon" href="/favicon-192.png" />
+  <link rel="canonical" href="https://itsnathan.id/projects.html" />
+  <meta property="og:title" content="Projects | Nathanael Tjahyadi" />
+  <meta property="og:description" content="All projects by Nathanael Tjahyadi across IoT, edge computing, UAVs, and DevOps." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://itsnathan.id/projects.html" />
+  <meta property="og:site_name" content="Nathanael Tjahyadi" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Projects | Nathanael Tjahyadi" />
+  <meta name="twitter:description" content="All projects by Nathanael Tjahyadi across IoT, edge computing, UAVs, and DevOps." />
+  <script>
+    (function () {
+      try {
+        const key = "theme";
+        const legacyKey = "preferred-theme";
+        let stored = localStorage.getItem(key);
+        if (!stored) stored = localStorage.getItem(legacyKey);
+        const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        const theme =
+          stored === "light" || stored === "dark"
+            ? stored
+            : systemDark
+              ? "dark"
+              : "light";
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (err) {
+        document.documentElement.setAttribute("data-theme", "light");
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css?v=4.0" />
 </head>
 
-<body>
-    <!-- Header / Nav -->
-    <header class="site-header">
-        <div class="container header-inner">
-            <div class="logo">
-                <a href="index.html">Nathan</a>
-            </div>
-            <nav class="nav">
-                <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
-                    ☰
-                </button>
-                <ul class="nav-list" id="navList">
-                    <li><a href="index.html#about">About</a></li>
-                    <li><a href="index.html#skills">Skills</a></li>
-                    <li><a href="projects.html" class="active">Projects</a></li>
-                    <li><a href="index.html#research">Research</a></li>
-                    <li><a href="index.html#experience">Experience</a></li>
-                    <li><a href="index.html#education">Education</a></li>
-                    <li><a href="index.html#honors">Honors</a></li>
-                    <li><a href="https://medium.com/@nathanael17" target="_blank" rel="noopener noreferrer">Blog</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
-                </ul>
+<body data-page="projects">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-                <!-- SLIDER THEME TOGGLE -->
-                <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
-                    <span class="theme-toggle-track">
-                        <span class="theme-toggle-thumb"></span>
-                        <span class="theme-toggle-icon theme-toggle-icon--moon">☾</span>
-                        <span class="theme-toggle-icon theme-toggle-icon--sun">☼</span>
-                    </span>
-                </button>
-            </nav>
-        </div>
-    </header>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo">
+        <a href="index.html">Nathan</a>
+      </div>
+      <nav class="nav" aria-label="Primary navigation">
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navList">
+          <span aria-hidden="true">☰</span>
+        </button>
+        <ul class="nav-list" id="navList">
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#skills">Skills</a></li>
+          <li><a href="projects.html" class="active" aria-current="page">Projects</a></li>
+          <li><a href="index.html#research">Research</a></li>
+          <li><a href="index.html#experience">Experience</a></li>
+          <li><a href="honors.html">Honors</a></li>
+          <li><a href="https://medium.com/@nathanael17" target="_blank" rel="noopener noreferrer">Blog</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
 
-    <main id="top">
-        <!-- Projects Header -->
-        <section class="section projects-page-header">
-            <div class="container">
-                <h1>All Projects</h1>
-                <p>A complete list of my works in IoT, Edge Computing, and DevOps.</p>
-            </div>
-        </section>
-
-        <!-- Projects Grid -->
-        <section id="projects" class="section">
-            <div class="container">
-                <div id="projectsFilters" class="tag-row projects-filters" aria-label="Project filters"></div>
-                <div id="projectsGrid" class="grid-3">
-                    <!-- Filled by JS (all items) -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact CTA -->
-        <section class="section section-alt">
-            <div class="container" style="text-align: center;">
-                <h2>Interested in collaborating?</h2>
-                <br>
-                <a href="index.html#contact" class="btn primary-btn">Get in Touch</a>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="site-footer">
-        <div class="container footer-inner">
-            <span>© <span id="year"></span> Nathanael Tjahyadi · <a href="https://github.com/Nathanael1721/"
-                    target="_blank" rel="noopener noreferrer">GitHub</a></span>
-            <span>Built with HTML, CSS, and vanilla JS</span>
-        </div>
-    </footer>
-
-    <!-- Project Modal (single instance, used by JS) -->
-    <div id="projectModal" class="modal" aria-hidden="true">
-        <div class="modal-backdrop" id="projectModalBackdrop"></div>
-        <div class="modal-dialog">
-            <button class="modal-close" id="projectModalClose" aria-label="Close">×</button>
-
-            <div class="modal-inner">
-                <!-- MEDIA / CAROUSEL -->
-                <div class="modal-media" id="projectModalMedia">
-                    <div class="modal-image-wrapper">
-                        <img id="projectModalImage" alt="" />
-                        <button class="carousel-btn carousel-prev" id="projectModalPrev"
-                            aria-label="Previous image">‹</button>
-                        <button class="carousel-btn carousel-next" id="projectModalNext"
-                            aria-label="Next image">›</button>
-                    </div>
-                    <div class="carousel-count" id="projectModalCount"></div>
-                </div>
-
-                <!-- TEXT -->
-                <div class="modal-body">
-                    <p id="projectModalKicker" class="card-kicker"></p>
-                    <h3 id="projectModalTitle"></h3>
-                    <p id="projectModalSummary"></p>
-                    <div id="projectModalTags" class="tag-row" aria-label="Project tags"></div>
-                    <p id="projectModalDetails"></p>
-                    <ul id="projectModalBullets" class="card-list"></ul>
-                    <div id="projectModalActions" class="modal-actions">
-                        <a id="projectModalFigma" class="btn primary-btn" href="#" target="_blank"
-                            rel="noopener noreferrer">
-                            View Figma Case Study
-                        </a>
-                        <a id="projectModalSite" class="btn primary-btn" href="#" target="_blank"
-                            rel="noopener noreferrer">
-                            Visit Website
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
+          <span class="theme-toggle-track">
+            <span class="theme-toggle-thumb"></span>
+            <span class="theme-toggle-icon theme-toggle-icon--moon" aria-hidden="true">☾</span>
+            <span class="theme-toggle-icon theme-toggle-icon--sun" aria-hidden="true">☼</span>
+          </span>
+        </button>
+      </nav>
     </div>
+  </header>
 
-    <!-- Main JS -->
-    <script src="js/main.js"></script>
+  <main id="main">
+    <section class="page-hero">
+      <div class="container">
+        <span class="eyebrow">Projects</span>
+        <h1>All Projects</h1>
+        <p>Hardware prototypes, LiDAR mapping, UAV platforms, and DevOps pipelines. Filter by tag.</p>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="container">
+        <div id="projectsFilters" class="projects-filters" role="group" aria-label="Filter projects by tag"></div>
+        <div id="projectsGrid" class="projects-showcase projects-showcase--archive"></div>
+      </div>
+    </section>
+
+    <section class="section section-alt">
+      <div class="container page-cta">
+        <div>
+          <h2>Work together</h2>
+          <p>Open to research collaboration and roles in IoT, edge computing, and DevOps.</p>
+        </div>
+        <div class="hero-actions">
+          <a href="mailto:nathanaelcayadi@gmail.com" class="btn primary-btn">Email Me</a>
+          <a href="index.html" class="btn ghost-btn">Back to Home</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> Nathanael Tjahyadi · <a href="https://github.com/Nathanael1721/" target="_blank" rel="noopener noreferrer">GitHub</a></span>
+      <span>Built with HTML, CSS, and vanilla JS</span>
+    </div>
+  </footer>
+
+  <div id="projectModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle" aria-hidden="true">
+    <div class="modal-backdrop" id="projectModalBackdrop"></div>
+    <div class="modal-dialog">
+      <button class="modal-close" id="projectModalClose" type="button" aria-label="Close project details">
+        <span aria-hidden="true">×</span>
+      </button>
+
+      <div class="modal-inner">
+        <div class="modal-media" id="projectModalMedia">
+          <div class="modal-image-wrapper">
+            <img id="projectModalImage" alt="" width="900" height="560" />
+            <button class="carousel-btn carousel-prev" id="projectModalPrev" type="button" aria-label="Previous image">
+              <span aria-hidden="true">‹</span>
+            </button>
+            <button class="carousel-btn carousel-next" id="projectModalNext" type="button" aria-label="Next image">
+              <span aria-hidden="true">›</span>
+            </button>
+          </div>
+          <div class="carousel-count" id="projectModalCount" aria-live="polite"></div>
+        </div>
+
+        <div class="modal-body">
+          <p id="projectModalKicker" class="modal-kicker"></p>
+          <h3 id="projectModalTitle"></h3>
+          <p id="projectModalSummary"></p>
+          <div id="projectModalTags" class="tag-row" aria-label="Project tags"></div>
+          <p id="projectModalDetails"></p>
+          <ul id="projectModalBullets" class="card-list"></ul>
+          <div id="projectModalActions" class="modal-actions">
+            <a id="projectModalFigma" class="btn ghost-btn" target="_blank" rel="noopener noreferrer">View Figma Case Study</a>
+            <a id="projectModalSite" class="btn primary-btn" target="_blank" rel="noopener noreferrer">Visit Website</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
 </body>
 
 </html>

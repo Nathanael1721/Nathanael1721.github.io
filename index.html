@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nathanael Tjahyadi | Portfolio</title>
-  <meta name="description" content="Portfolio of Nathanael Tjahyadi, IoT, Edge Computing, and DevOps Engineer." />
+  <meta name="description" content="Portfolio of Nathanael Tjahyadi: software engineer and EECS master's student in Taipei working on IoT, edge computing, and DevOps." />
   <meta name="author" content="Nathanael Tjahyadi" />
   <meta name="robots" content="index, follow" />
   <meta name="color-scheme" content="light dark" />
@@ -14,29 +14,28 @@
   <link rel="apple-touch-icon" href="/favicon-192.png" />
   <link rel="canonical" href="https://itsnathan.id/" />
   <meta property="og:title" content="Nathanael Tjahyadi | Portfolio" />
-  <meta property="og:description"
-    content="Portfolio of Nathanael Tjahyadi, IoT, Edge Computing, and DevOps Engineer." />
+  <meta property="og:description" content="Software engineer and EECS master's student in Taipei working on IoT, edge computing, and DevOps." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://itsnathan.id/" />
   <meta property="og:site_name" content="Nathanael Tjahyadi" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Nathanael Tjahyadi | Portfolio" />
-  <meta name="twitter:description"
-    content="Portfolio of Nathanael Tjahyadi, IoT, Edge Computing, and DevOps Engineer." />
+  <meta name="twitter:description" content="Software engineer and EECS master's student in Taipei working on IoT, edge computing, and DevOps." />
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Nathanael Tjahyadi",
       "url": "https://itsnathan.id/",
-      "jobTitle": "IoT, Edge Computing, and DevOps Engineer",
+      "jobTitle": "Software Engineer",
       "address": {
         "@type": "Place",
         "name": "Taipei, Taiwan"
       },
       "sameAs": [
         "https://www.linkedin.com/in/nathanael-tjahyadi/",
-        "https://medium.com/@nathanael17"
+        "https://medium.com/@nathanael17",
+        "https://github.com/Nathanael1721/"
       ]
     }
   </script>
@@ -56,23 +55,27 @@
               : "light";
         document.documentElement.setAttribute("data-theme", theme);
       } catch (err) {
-        document.documentElement.setAttribute("data-theme", "dark");
+        document.documentElement.setAttribute("data-theme", "light");
       }
     })();
   </script>
-  <link rel="stylesheet" href="css/style.css?v=2.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="css/style.css?v=4.0" />
 </head>
 
-<body>
-  <!-- Header / Nav -->
+<body data-page="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+
   <header class="site-header">
     <div class="container header-inner">
       <div class="logo">
         <a href="#top">Nathan</a>
       </div>
-      <nav class="nav">
-        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation" aria-expanded="false">
-          ☰
+      <nav class="nav" aria-label="Primary navigation">
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="navList">
+          <span aria-hidden="true">☰</span>
         </button>
         <ul class="nav-list" id="navList">
           <li><a href="#about">About</a></li>
@@ -80,266 +83,328 @@
           <li><a href="#projects">Projects</a></li>
           <li><a href="#research">Research</a></li>
           <li><a href="#experience">Experience</a></li>
-          <li><a href="#education">Education</a></li>
           <li><a href="#honors">Honors</a></li>
           <li><a href="https://medium.com/@nathanael17" target="_blank" rel="noopener noreferrer">Blog</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
 
-        <!-- SLIDER THEME TOGGLE -->
         <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle color theme">
           <span class="theme-toggle-track">
             <span class="theme-toggle-thumb"></span>
-            <span class="theme-toggle-icon theme-toggle-icon--moon">☾</span>
-            <span class="theme-toggle-icon theme-toggle-icon--sun">☼</span>
+            <span class="theme-toggle-icon theme-toggle-icon--moon" aria-hidden="true">☾</span>
+            <span class="theme-toggle-icon theme-toggle-icon--sun" aria-hidden="true">☼</span>
           </span>
         </button>
       </nav>
     </div>
   </header>
 
-
-
-  <main id="top">
-    <!-- Hero -->
-    <section class="hero">
+  <main id="main">
+    <section id="top" class="hero band">
       <div class="container hero-inner">
         <div class="hero-text">
-          <p class="hero-kicker">IoT • Edge Computing • DevOps</p>
-          <h1 class="hero-title">Nathanael Tjahyadi (謝薛種)</h1>
+          <span class="eyebrow">IoT · Edge Computing · DevOps</span>
+          <h1 class="hero-title">
+            Nathanael Tjahyadi
+            <span class="hero-hanzi" lang="zh-Hant">謝薛種</span>
+          </h1>
           <p class="hero-subtitle">
-            Engineer focusing on IoT, edge computing, and DevOps.
-            Building systems that are observable, automated, and reliable from sensor to cloud.
+            Software engineer and EECS master's student in Taipei.
+            I build systems that keep working from sensor to cloud.
           </p>
           <div class="hero-actions">
             <a href="#projects" class="btn primary-btn">View Projects</a>
-            <a href="#contact" class="btn ghost-btn">Get in Touch</a>
-          </div>
-          <div class="hero-meta">
-            <span>Taipei, Taiwan</span>
-            <span>Master’s Student, EECS – Taipei Tech</span>
+            <a href="mailto:nathanaelcayadi@gmail.com" class="btn ghost-btn">Email Me</a>
           </div>
         </div>
 
-        <div class="hero-card">
-          <div class="hero-card-inner">
-            <h2>Current Focus</h2>
-            <ul>
-              <li>Edge computing for smart agriculture</li>
-              <li>DevOps & CI/CD for cloud-native systems</li>
-              <li>AIoT & UAV experimentation (Ardupilot, MAVLink)</li>
-            </ul>
-          </div>
-        </div>
+        <aside class="hero-card" aria-labelledby="nowTitle">
+          <h2 id="nowTitle">Now</h2>
+          <dl class="facts">
+            <div class="fact-row">
+              <dt>Work</dt>
+              <dd>Software Engineer, Provision Information (普鴻資訊)</dd>
+            </div>
+            <div class="fact-row">
+              <dt>Study</dt>
+              <dd>M.S. EECS, Taipei Tech</dd>
+            </div>
+            <div class="fact-row">
+              <dt>Focus</dt>
+              <dd>Edge AIoT, LoRaWAN, UAV, Cloud DevOps</dd>
+            </div>
+            <div class="fact-row">
+              <dt>Papers</dt>
+              <dd>IEEE, IIETA (MMEP), INFORM (2025)</dd>
+            </div>
+          </dl>
+        </aside>
       </div>
     </section>
 
-    <!-- About -->
     <section id="about" class="section">
-      <div class="container section-inner two-col">
-        <div>
+      <div class="container">
+        <div class="section-head">
           <h2>About</h2>
-          <p>
-            I work across IoT, networking, and DevOps. I have experience running Linux servers,
-            building CI/CD pipelines, and deploying containerized workloads on cloud and on-premise infrastructure.
-          </p>
-          <p>
-            On the hardware side, I prototype with Raspberry Pi, Arduino, LoRa, and various sensors to build
-            smart agriculture, monitoring, and UAV systems. My goal is to design systems that keep working
-            even when networks fail and resources are constrained.
-          </p>
+          <span class="section-num" aria-hidden="true">01</span>
         </div>
-        <div class="about-highlight">
-          <h3>Snapshot</h3>
-          <ul class="tag-list">
-            <li>DevOps Engineer Intern @ Telkom Indonesia</li>
-            <li>IoT Programmer Intern @ Vascomm</li>
-            <li>Teaching Factory @ Jagoan Hosting (Beon)</li>
-            <li>APERTI BUMN Scholarship Awardee</li>
-            <li>Multiple national competition awards</li>
-          </ul>
-        </div>
-      </div>
-    </section>
 
-    <!-- Skills -->
-    <section id="skills" class="section section-alt">
-      <div class="container">
-        <h2>Skills</h2>
-        <div class="grid-3">
-          <div class="card">
-            <h3>Cloud, DevOps & Monitoring</h3>
-            <ul>
-              <li>AWS, Azure</li>
-              <li>Docker, Kubernetes</li>
-              <li>Bitbucket Pipelines & CI/CD automation</li>
-              <li>DevSecOps practices & Linux server administration</li>
-              <li>Grafana, Prometheus, Datadog, Alerta</li>
-              <li>Networking fundamentals</li>
-              <li>Python, Bash, Git, VS Code</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>IoT & Embedded</h3>
-            <ul>
-              <li>Raspberry Pi, Arduino</li>
-              <li>LoRa / LoRaWAN</li>
-              <li>Sensor integration (DHT, soil moisture, etc.)</li>
-              <li>Edge data processing</li>
-            </ul>
-          </div>
-          <div class="card">
-            <h3>Creative Works</h3>
-            <ul>
-              <li>UI/UX using Figma (wireframes, prototypes, design systems)</li>
-              <li>Premiere Pro & After Effects for motion / video edits</li>
-              <li>Design & branding concepts across digital assets</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projects -->
-    <section id="projects" class="section">
-      <div class="container">
-        <h2>Selected Projects</h2>
-        <div id="projectsGrid" class="grid-3">
-          <!-- Filled by JS -->
-        </div>
-        <div style="text-align: center; margin-top: 2rem;">
-          <a href="projects.html" class="btn primary-btn">See More Projects</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Research -->
-    <section id="research" class="section section-alt">
-      <div class="container">
-        <h2>Research & Publications</h2>
-        <div id="researchList" class="research-list">
-          <!-- Filled by JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience -->
-    <section id="experience" class="section">
-      <div class="container">
-        <h2>Experience</h2>
-        <div id="experienceTimeline" class="timeline">
-          <!-- Filled by JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Education -->
-    <section id="education" class="section section-alt">
-      <div class="container">
-        <h2>Education</h2>
-        <div id="educationTimeline" class="timeline">
-          <!-- Filled by JS -->
-        </div>
-      </div>
-    </section>
-
-    <!-- Honors -->
-    <section id="honors" class="section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Honors & Achievements</h2>
-          <p>Competitions, scholarships, and awards I received during school and university.</p>
-        </div>
-        <div id="honorsGrid" class="honors-grid">
-          <!-- Filled by JS -->
-        </div>
-        <div style="text-align: center; margin-top: 2rem;">
-          <a href="honors.html" class="btn primary-btn">See More Honors</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- Contact -->
-    <section id="contact" class="section section-alt">
-      <div class="container">
-        <h2>Contact</h2>
-        <p>
-          For collaboration, research, or opportunities in IoT, edge computing, and DevOps,
-          use the channels below.
-        </p>
-        <div class="contact-grid">
-          <div>
-            <h3>Email</h3>
-            <p><a href="mailto:nathanaelcayadi@gmail.com">nathanaelcayadi@gmail.com</a></p>
-          </div>
-          <div>
-            <h3>LinkedIn</h3>
+        <div class="about-layout">
+          <div class="about-prose">
             <p>
-              <a href="https://www.linkedin.com/in/nathanael-tjahyadi/" target="_blank" rel="noopener noreferrer">
-                LinkedIn
-              </a>
+              I work across IoT, networking, and DevOps. I run Linux servers,
+              build CI/CD pipelines, and deploy containers on cloud and on-premise infrastructure.
+            </p>
+            <p>
+              On the hardware side, I prototype with Raspberry Pi, Arduino, LoRa, LiDAR, and Pixhawk
+              for smart agriculture, monitoring, and UAV systems.
+              My goal: edge nodes that keep working when the network drops.
             </p>
           </div>
-          <div>
-            <h3>Location</h3>
-            <p>Taipei, Taiwan</p>
+
+          <div class="snapshot">
+            <h3>Snapshot</h3>
+            <ul class="snapshot-list">
+              <li><span class="snapshot-key">Fintech</span>Banking and payment software at Provision Information</li>
+              <li><span class="snapshot-key">Telco</span>DevOps Engineer Intern, Telkom Indonesia</li>
+              <li><span class="snapshot-key">Embedded</span>IoT Programmer Intern, Vascomm</li>
+              <li><span class="snapshot-key">Scholarships</span>APERTI BUMN, Taipei Tech International Graduate</li>
+            </ul>
           </div>
         </div>
-        <p class="contact-note">
-          CV available on request or via LinkedIn.
-        </p>
+      </div>
+    </section>
+
+    <section id="skills" class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Skills</h2>
+            <p class="section-lead">Grouped by layer, from cloud to device to interface.</p>
+          </div>
+          <span class="section-num" aria-hidden="true">02</span>
+        </div>
+
+        <div class="capability-list">
+          <div class="capability-row">
+            <div class="capability-domain">
+              <h3>Cloud, DevOps &amp; Monitoring</h3>
+              <p>Pipelines, containers, and fleet metrics.</p>
+            </div>
+            <ul class="capability-items">
+              <li>AWS</li>
+              <li>Azure</li>
+              <li>Docker</li>
+              <li>Kubernetes</li>
+              <li>Bitbucket Pipelines</li>
+              <li>DevSecOps</li>
+              <li>Linux administration</li>
+              <li>Grafana</li>
+              <li>Prometheus</li>
+              <li>InfluxDB</li>
+              <li>Telegraf</li>
+              <li>Datadog</li>
+              <li>Alerta</li>
+              <li>Nginx</li>
+              <li>Python</li>
+              <li>Bash</li>
+              <li>Git</li>
+            </ul>
+          </div>
+
+          <div class="capability-row">
+            <div class="capability-domain">
+              <h3>IoT, Embedded &amp; UAV</h3>
+              <p>Sensors, edge buffering, vision, and flight control.</p>
+            </div>
+            <ul class="capability-items">
+              <li>Raspberry Pi</li>
+              <li>Arduino</li>
+              <li>Omron PLC</li>
+              <li>LoRa / LoRaWAN</li>
+              <li>MQTT</li>
+              <li>YOLOv8</li>
+              <li>SLAM LiDAR</li>
+              <li>Cesium 3D</li>
+              <li>Pixhawk</li>
+              <li>ArduPilot</li>
+              <li>MAVLink</li>
+            </ul>
+          </div>
+
+          <div class="capability-row">
+            <div class="capability-domain">
+              <h3>Design &amp; Media</h3>
+              <p>Interface prototypes and video edits.</p>
+            </div>
+            <ul class="capability-items">
+              <li>Figma</li>
+              <li>Next.js</li>
+              <li>Premiere Pro</li>
+              <li>After Effects</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Selected Projects</h2>
+            <p class="section-lead">Hardware prototypes, 3D mapping, and DevOps systems.</p>
+          </div>
+          <span class="section-num" aria-hidden="true">03</span>
+        </div>
+
+        <div id="projectsGrid" class="projects-showcase"></div>
+
+        <div class="section-footer-cta">
+          <a href="projects.html" class="btn ghost-btn">All Projects<span id="projectsCount"></span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="research" class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Research &amp; Publications</h2>
+            <p class="section-lead">EMI prediction with machine learning, and containerized IoT telemetry.</p>
+          </div>
+          <span class="section-num" aria-hidden="true">04</span>
+        </div>
+
+        <div id="researchList" class="research-ledger"></div>
+      </div>
+    </section>
+
+    <section id="experience" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2>Experience &amp; Education</h2>
+          <span class="section-num" aria-hidden="true">05</span>
+        </div>
+
+        <div class="career-grid">
+          <div>
+            <h3 class="sub-block-title">Experience</h3>
+            <div id="experienceTimeline" class="timeline"></div>
+          </div>
+
+          <div id="education">
+            <h3 class="sub-block-title">Education</h3>
+            <div id="educationTimeline" class="timeline"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="honors" class="section section-alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Honors &amp; Awards</h2>
+            <p class="section-lead">Competitions and scholarships from school and university.</p>
+          </div>
+          <span class="section-num" aria-hidden="true">06</span>
+        </div>
+
+        <div id="honorsGrid" class="honors-registry"></div>
+
+        <div class="section-footer-cta">
+          <a href="honors.html" class="btn ghost-btn">All Honors<span id="honorsCount"></span></a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section band">
+      <div class="container">
+        <div class="section-head">
+          <h2>Contact</h2>
+          <span class="section-num" aria-hidden="true">07</span>
+        </div>
+
+        <div class="contact-layout">
+          <div>
+            <p>
+              Open to research collaboration and roles in IoT, edge computing, and DevOps.
+            </p>
+            <div class="hero-actions">
+              <a href="mailto:nathanaelcayadi@gmail.com" class="btn primary-btn">Email Me</a>
+              <a href="https://www.linkedin.com/in/nathanael-tjahyadi/" target="_blank" rel="noopener noreferrer" class="btn ghost-btn">Message on LinkedIn</a>
+            </div>
+            <p class="contact-note">CV available on request or via LinkedIn.</p>
+          </div>
+
+          <div class="contact-channels">
+            <div class="contact-channel-item">
+              <span class="channel-label">Email</span>
+              <p class="channel-value"><a href="mailto:nathanaelcayadi@gmail.com">nathanaelcayadi@gmail.com</a></p>
+            </div>
+            <div class="contact-channel-item">
+              <span class="channel-label">Code &amp; writing</span>
+              <p class="channel-value">
+                <a href="https://github.com/Nathanael1721/" target="_blank" rel="noopener noreferrer">GitHub</a>
+                ·
+                <a href="https://medium.com/@nathanael17" target="_blank" rel="noopener noreferrer">Medium</a>
+              </p>
+            </div>
+            <div class="contact-channel-item">
+              <span class="channel-label">Location</span>
+              <p class="channel-value">Taipei, Taiwan</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
   <footer class="site-footer">
     <div class="container footer-inner">
-      <span>© <span id="year"></span> Nathanael Tjahyadi · <a href="https://github.com/Nathanael1721/" target="_blank"
-          rel="noopener noreferrer">GitHub</a></span>
+      <span>© <span id="year"></span> Nathanael Tjahyadi · <a href="https://github.com/Nathanael1721/" target="_blank" rel="noopener noreferrer">GitHub</a></span>
       <span>Built with HTML, CSS, and vanilla JS</span>
     </div>
   </footer>
 
-  <!-- Project Modal (single instance, used by JS) -->
-  <div id="projectModal" class="modal" aria-hidden="true">
+  <div id="projectModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="projectModalTitle" aria-hidden="true">
     <div class="modal-backdrop" id="projectModalBackdrop"></div>
     <div class="modal-dialog">
-      <button class="modal-close" id="projectModalClose" aria-label="Close">×</button>
+      <button class="modal-close" id="projectModalClose" type="button" aria-label="Close project details">
+        <span aria-hidden="true">×</span>
+      </button>
 
       <div class="modal-inner">
-        <!-- MEDIA / CAROUSEL -->
         <div class="modal-media" id="projectModalMedia">
           <div class="modal-image-wrapper">
-            <img id="projectModalImage" alt="" />
-            <button class="carousel-btn carousel-prev" id="projectModalPrev" aria-label="Previous image">‹</button>
-            <button class="carousel-btn carousel-next" id="projectModalNext" aria-label="Next image">›</button>
+            <img id="projectModalImage" alt="" width="900" height="560" />
+            <button class="carousel-btn carousel-prev" id="projectModalPrev" type="button" aria-label="Previous image">
+              <span aria-hidden="true">‹</span>
+            </button>
+            <button class="carousel-btn carousel-next" id="projectModalNext" type="button" aria-label="Next image">
+              <span aria-hidden="true">›</span>
+            </button>
           </div>
-          <div class="carousel-count" id="projectModalCount"></div>
+          <div class="carousel-count" id="projectModalCount" aria-live="polite"></div>
         </div>
 
-        <!-- TEXT -->
         <div class="modal-body">
-          <p id="projectModalKicker" class="card-kicker"></p>
+          <p id="projectModalKicker" class="modal-kicker"></p>
           <h3 id="projectModalTitle"></h3>
           <p id="projectModalSummary"></p>
           <div id="projectModalTags" class="tag-row" aria-label="Project tags"></div>
           <p id="projectModalDetails"></p>
           <ul id="projectModalBullets" class="card-list"></ul>
           <div id="projectModalActions" class="modal-actions">
-            <a id="projectModalFigma" class="btn primary-btn" href="#" target="_blank" rel="noopener noreferrer">
-              View Figma Case Study
-            </a>
-            <a id="projectModalSite" class="btn primary-btn" href="#" target="_blank" rel="noopener noreferrer">
-              Visit Website
-            </a>
+            <a id="projectModalFigma" class="btn ghost-btn" target="_blank" rel="noopener noreferrer">View Figma Case Study</a>
+            <a id="projectModalSite" class="btn primary-btn" target="_blank" rel="noopener noreferrer">Visit Website</a>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Main JS -->
   <script src="js/main.js"></script>
 </body>
 
